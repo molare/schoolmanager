@@ -9,46 +9,46 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- dataTables css -->
-    <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('plugins/data-tables/responsive.datatables.min.css')}}" rel="stylesheet" type="text/css"/>
-      <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
+    <link href="plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <link href="plugins/data-tables/responsive.datatables.min.css" rel="stylesheet" type="text/css"/>
+      <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
 
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Toastr -->
-    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     
         <!-- Select2 -->
-    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-    <script src="{{asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
+    <script src="plugins/select2/js/select2.full.min.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
     <!-- dataTables js -->
-    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('plugins/data-tables/datatables.bootstrap4.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}" type="text/javascript"></script>
+    <script src="plugins/data-tables/jquery.datatables.min.js" type="text/javascript"></script>
+    <script src="plugins/data-tables/datatables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="plugins/data-tables/datatables.responsive.min.js" type="text/javascript"></script>
     <!-- SweetAlert2 -->
-    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- Toastr -->
-    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
-    <script src="{{asset('plugins/toast.js')}}"></script>
+    <script src="plugins/toastr/toastr.min.js"></script>
+    <script src="plugins/toast.js"></script>
     <!-- AdminLTE App -->
-    <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+    <script src="dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="{{asset('dist/js/demo.js')}}"></script>
+    <script src="dist/js/demo.js"></script>
     <!-- page script -->
     
       <style>
@@ -116,7 +116,7 @@
             table= $('#studentTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('students.index')}}",
+                //"sAjaxSource":"{{route('students.index",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
@@ -142,7 +142,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('students.index')}}",
+                    "url" :"{{route('students.index",
                     "dataSrc" :""
 
                 },
@@ -209,7 +209,7 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               var form_data = new FormData($('#studentForm')[0]);
                     $.ajax({
-                        url: "{{route('students.store')}}",
+                        url: "{{route('students.store",
                         type: 'POST',
                         data:form_data,
                         processData : false,
@@ -431,7 +431,7 @@
  //LIST Classe OPTION
         function classeOption(){
             $.ajax({
-                url:"{{route('classRooms.index')}}",
+                url:"{{route('classRooms.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -450,7 +450,7 @@
       //LIST EDIT product OPTION
         function editClasseOption(valId, valText){
             $.ajax({
-                url:"{{route('classRooms.index')}}",
+                url:"{{route('classRooms.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -470,7 +470,7 @@
      //GENRE OPTION
             function genreOption(){
             $.ajax({
-                url:"{{route('genres.index')}}",
+                url:"{{route('genres.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -489,7 +489,7 @@
       //LIST EDIT product OPTION
         function editGenreOption(valId, valText){
             $.ajax({
-                url:"{{route('genres.index')}}",
+                url:"{{route('genres.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -509,7 +509,7 @@
       //PARENT OPTION
             function parentOption(){
             $.ajax({
-                url:"{{route('parents.index')}}",
+                url:"{{route('parents.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -528,7 +528,7 @@
       //LIST EDIT product OPTION
         function editParentOption(valId, valText){
             $.ajax({
-                url:"{{route('parents.index')}}",
+                url:"{{route('parents.index",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
