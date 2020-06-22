@@ -77,6 +77,33 @@
     transition: all 0.3s ease-in-out;   
     -webkit-transform: scale(1.1);
     transform: scale(3.1)
+ }
+#loadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+
+#editLoadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
 }
 </style> 
     <!-- PAGE LEVEL SCRIPTS-->
@@ -84,7 +111,7 @@
 
         var table;
         $(document).ready(function(){
-            
+             $('#loadingId').hide(); 
             $('[data-mask]').inputmask()
             table= $('#studentTable').DataTable({
                 "responsive": true,
@@ -131,10 +158,11 @@
                     {"data":"last_name"},
                     {"data":"birth_date"},
                     {"data":"classe"},
-                    {"data":"email"},
                     {"data":"phone"},
-                    {"data":"adresse"},
+                    {"data":"rest"},
                     {"data":"active"},
+                    {"data":"email"},
+                    {"data":"adresse"},
                     {"data":"action"}
 
                 ],
@@ -187,12 +215,12 @@
                         processData : false,
                         contentType:false,
                         //dataType: "json",
-                        /*beforeSend: function() {
+                        beforeSend: function() {
                          $('#loadingId').show();
-                         },*/
+                         },
                         success: function (response) {
                             console.log(response);
-                            // $('#loadingId').hide();
+                            $('#loadingId').hide();
                             // remove the error
                             $(".form-group").removeClass('has-error').removeClass('has-success');
                             if (response.success === true) {
@@ -218,6 +246,7 @@
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);
+                         $('#loadingId').hide();
                        if(jqXHR.responseJSON.errors.first_name !==undefined){
                              $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.first_name+'</p>');
                              }
@@ -238,13 +267,13 @@
         //FUNCTION UPDATE DEVIS
         function editStudent(id){
             if(id) {
+                $('#editLoadingId').hide();
                 // remove the error
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 // empty the message div
                 $(".edit-messages").html("");
                 // $("#editPicture").val('');
-                $('#editLoadingId').hide();
                 $("#editSchoolYearActiveId").html("");
                 $("#editSchoolYearActive").val("");
                 // remove the id
@@ -256,24 +285,24 @@
                     dataType: 'json',
                     success:function(response) {
                         console.log(response);
-                         editClasseOption(response.classe.id,response.classe.name);
-                         editParentOption(response.parente.id,response.parente.first_name+' '+response.parente.last_name)
-                         editGenreOption(response.genre_id.id,response.genre_id.name);
-                         $("#editRegisterNumberId").val(response.register_number)
-                         $("#editFirstNameId").val(response.first_name);
-                         $("#editLastNameId").val(response.last_name);
-                         $("#editEmailId").val(response.email);
-                         $("#editAdresseId").val(response.adresse);
-                         $("#editPhoneId").val(response.phone);
-                         $("#editCelId").val(response.cel);
-                         $('#editBirthDateId').val(response.birth_date);
-                         $("#editPictureId").html(response.editImage);
-                         $("#editSchoolYearActive").val(response.schoolYear.name);
-                         $("#editSchoolYearActiveId").append('<option value='+response.schoolYear.id+'>'+response.schoolYear.name+'</option>');
+                         editClasseOption(response.data.classe.id,response.data.classe.name);
+                         editParentOption(response.data.parente.id,response.data.parente.first_name+' '+response.data.parente.last_name)
+                         editGenreOption(response.data.genre_id.id,response.data.genre_id.name);
+                         $("#editRegisterNumberId").val(response.data.register_number)
+                         $("#editFirstNameId").val(response.data.first_name);
+                         $("#editLastNameId").val(response.data.last_name);
+                         $("#editEmailId").val(response.data.email);
+                         $("#editAdresseId").val(response.data.adresse);
+                         $("#editPhoneId").val(response.data.phone);
+                         $("#editCelId").val(response.data.cel);
+                         $('#editBirthDateId').val(response.data.birth_date);
+                         $("#editPictureId").html(response.data.editImage);
+                         $("#editSchoolYearActive").val(response.data.schoolYear.name);
+                         $("#editSchoolYearActiveId").append('<option value='+response.data.schoolYear.id+'>'+response.data.schoolYear.name+'</option>');
 
 
 
-                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.id+'"/>');
+                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
                         $("#btnUpdatestudentId").unbind('click').bind('click', function(){
 
@@ -295,10 +324,11 @@
                                     contentType:false,
                                     cache: false,
                                     //dataType :"json",
-                                    /* beforeSend: function() {
+                                    beforeSend: function() {
                                      $('#editLoadingId').show();
-                                     },*/
+                                     },
                                     success:function(response) {
+                                        $('#editLoadingId').hide();
                                          console.log("response1")
                                         console.log(response)
                                          console.log("response2")
@@ -516,8 +546,16 @@
     //FIN
     
     //FUNCTION INFO
+    var paymentTable;
+    var totalPaymentTable;
         function infoStudent(id){
+            
             if(id) {
+                                
+                $("#defaultActive1").addClass('active');
+                $("#defaultActive2").removeClass('active');
+                $("#defaultActive3").removeClass('active');
+                //$("#defaultActive3").html('');
                 // remove the error
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
@@ -536,29 +574,98 @@
                         console.log(response);
                         
                         /*Student details*/
-                         $("#editClasseIds").html(response.classe.name);
-                         $("#editMatIds").html(response.register_number);
-                         $("#editGenreIds").html(response.genre_id.name)
-                         $("#editFirstNameIds").html(response.first_name);
-                         $("#editLastNameIds").html(response.last_name);
-                         $("#editEmailIds").html(response.email);
-                         $("#editAdresseIds").html(response.adresse);
-                         $("#editPhoneIds").html(response.phone);
-                         $("#editCelIds").html(response.cel);
-                         $("#editPictureIds").html(response.infoImage);
-                         $("#editDateIds").html(response.dateFormat);
+                         $("#editClasseIds").html(response.data.classe.name);
+                         $("#editMatIds").html(response.data.register_number);
+                         $("#editGenreIds").html(response.data.genre_id.name)
+                         $("#editFirstNameIds").html(response.data.first_name);
+                         $("#editLastNameIds").html(response.data.last_name);
+                         $("#editEmailIds").html(response.data.email);
+                         $("#editAdresseIds").html(response.data.adresse);
+                         $("#editPhoneIds").html(response.data.phone);
+                         $("#editCelIds").html(response.data.cel);
+                         $("#editPictureIds").html(response.data.infoImage);
+                         $("#editDateIds").html(response.data.dateFormat);
                          
                          /*Parents details*/
-                         $("#editGenreParentIds").html(response.parenteGenre.name)
-                         $("#editNameParentIds").html(response.parente.first_name+' '+response.parente.last_name);
-                         $("#editEmailParentIds").html(response.parente.email);
-                         $("#editAdresseParentIds").html(response.parente.adresse);
-                         $("#editPhoneParentIds").html(response.parente.phone);
-                         $("#editCelParentIds").html(response.parente.cel);
-                         $("#editDateParentIds").html(response.parente.dateFormat);
+                         $("#editGenreParentIds").html(response.data.parenteGenre.name)
+                         $("#editNameParentIds").html(response.data.parente.first_name+' '+response.data.parente.last_name);
+                         $("#editEmailParentIds").html(response.data.parente.email);
+                         $("#editAdresseParentIds").html(response.data.parente.adresse);
+                         $("#editPhoneParentIds").html(response.data.parente.phone);
+                         $("#editCelParentIds").html(response.data.parente.cel);
+                         $("#editDateParentIds").html(response.data.parente.dateFormat);
                         
 
-                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.id+'"/>');
+                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.data.id+'"/>');
+              
+              //=======data tables================ 
+              if(typeof response.payment[0] != undefined && response.payment[0]){
+                $('#totalRestId').html(response.payment[0].total+' FCFA');
+                $('#totalPayId').html(response.payment[0].totalPay+' FCFA');
+               }else{
+                $('#totalRestId').html(response.scolarite+' FCFA');
+                $('#totalPayId').html(response.payment+' FCFA');
+                   
+               }   
+              paymentTable =$('#paymentTableId').DataTable({
+                "responsive": true,
+                "autoWidth":false,
+                destroy: true,
+                searching: false,
+                "bLengthChange" : false, //thought this line could hide the LengthMenu
+                "bInfo":false,    
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ Enregistrements",
+                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sZeroRecords": "Aucun résultat",
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
+                    "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
+                    "oPaginate": {
+                        "sNext": 'Suivant',
+                        "sPrevious": 'Précèdent',
+                    },
+                    "select": {
+                        "rows": {
+                            "_": " %d ligne sélectionnée(s)",
+                            "1": "1 ligne sélectionnée"
+                        }
+                    }
+                },
+              
+                /*"aLengthMenu": [
+                    [10, 25, 100, -1],
+                    [10, 25, 100, " Tous"]
+                ],*/
+                 // "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
+
+                  "ajax":{
+                    "url" :"/students/"+$("#student_edit_id").val(),
+                    "dataSrc" :"payment"
+
+                },
+                "aaSorting": [
+                    [0, 'desc'],
+                    [1, 'asc']
+                ], "columns":[
+                    {"data":"date_payment"},
+                    {"data":"type"},
+                    {"data":"amount"}
+                   
+
+                ],
+                'columnDefs': [{
+                    'className': 'select-checkbox',
+                    'targets': 0,
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                }],
+                'select': {
+                    'style': 'multi'
+                }
+
+            });
+            //FIN DATATABLE
                         
                     }
                 }); //fetch selected member info
@@ -634,11 +741,12 @@
                                         <th>Prenom</th>
                                         <th>Date Naissance</th>
                                         <th>Classe</th>
-                                         <th>Email</th>
                                          <th>Téléphone</th>
+                                         <th data-priority ="1">Scolarité</th>
+                                         <th data-priority ="2">Active</th>
+                                         <th>Email</th>
                                          <th>Adresse</th>
-                                         <th data-priority ="1">Active</th>
-                                         <th data-priority ="2">Action</th>
+                                         <th data-priority ="3">Action</th>
                                     </tr>
                                     </thead>
 
@@ -646,18 +754,19 @@
                                     <tr>
                                        
                                         <th>Date création</th>
-                                         <th>Photo</th>
+                                        <th>Photo</th>
                                         <th>Sexe</th>
-                                         <th>Matricule</th>
+                                        <th>Matricule</th>
                                         <th>Nom</th>
                                         <th>Prenom</th>
                                         <th>Date Naissance</th>
                                         <th>Classe</th>
-                                         <th>Email</th>
                                          <th>Téléphone</th>
+                                         <th data-priority ="1">Scolarité</th>
+                                         <th data-priority ="2">Active</th>
+                                         <th>Email</th>
                                          <th>Adresse</th>
-                                         <th data-priority ="1">Active</th>
-                                         <th data-priority ="2">Action</th>
+                                         <th data-priority ="3">Action</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -699,6 +808,11 @@
                 <form id="studentForm" autocomplete="off" enctype="multipart/form-data">
                     
                      {{csrf_field()}}
+                     
+                  <div id="loadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
+                     
                     <div class="messages"></div>
                     
                     <div class="row">
@@ -863,6 +977,9 @@
                 <!--FORMULIARE-->
                 <form id="editstudentForm" autocomplete="off">
                       {{csrf_field()}}
+                  <div id="editLoadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="messages"></div>
                     
@@ -1098,9 +1215,9 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#studentOngletDetail" data-toggle="tab">Profile</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#parentOngletDetail" data-toggle="tab">Tuteur</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Scolarité</a></li>
+                  <li class="nav-item"><a id="defaultActive1" class="nav-link" href="#studentOngletDetail" data-toggle="tab">Profile</a></li>
+                  <li class="nav-item"><a id="defaultActive2" class="nav-link" href="#parentOngletDetail" data-toggle="tab">Tuteur</a></li>
+                  <li class="nav-item"><a id="defaultActive3" class="nav-link" href="#settings" data-toggle="tab">Scolarité</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -1176,52 +1293,46 @@
                     
 
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                      
+                           <!-- /.card-header -->
+                        <div class="card-header">
+                            <span><b><h4>Reglement globale</h4></b></span></br>
+                            <li class="list-group-item">
+                            <b>Total versé</b> <a class="float-right" id="totalPayId"></a>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Montant à regler</b> <a class="float-right" id="totalRestId"></a>
+                          </li>
                         </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                      
+                        <!-- /.card-body -->
+                             <!-- /.card-header -->
+                        <div class="card-header">
+                            <span><b><h4>Detail des reglements</h4></b></span></br>
                         </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                        <div class="card-body">
+                            <div class="responsive-data-table">
+                                <table id="paymentTableId"  class="table dt-responsive nowrap table-hover  table-striped" >
+                                    <thead>
+                                    <tr>
+                                        <th>Date Reglement</th>
+                                        <th>Type</th>
+                                        <th>Montant Versé</th>
+                                        
+                                    </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                    <tr>
+                                       <th>Date Reglement</th>
+                                        <th>Type</th>
+                                        <th>Montant Versé</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">	
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+                        <!-- /.card-body -->
                   </div>
                   <!-- /.tab-pane -->
                 </div>

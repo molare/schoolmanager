@@ -52,7 +52,7 @@
             table= $('#typeTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('categories.index')}}",
+                //"sAjaxSource":"{{route('paymentTypes.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
@@ -78,7 +78,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('categories.index')}}",
+                    "url" :"{{route('paymentTypes.index')}}",
                     "dataSrc" :""
 
                 },
@@ -109,7 +109,7 @@
 
             //IF OPEN MODAL
             $("#btnAddNew").click(function(){
-                $("#categoryForm")[0].reset();
+                $("#paymentTypeForm")[0].reset();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 $('#loadingId').hide();
@@ -118,14 +118,14 @@
             });
 
             //FONCTION ADD DEVIS
-            $("#btnAddcategoryId").on('click', function(){
+            $("#btnAddpaymentTypeId").on('click', function(){
                 $(".text-danger").remove();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               
                     $.ajax({
-                        url: "{{route('categories.store')}}",
+                        url: "{{route('paymentTypes.store')}}",
                         type: 'POST',
-                        data: $("#categoryForm").serialize(),
+                        data: $("#paymentTypeForm").serialize(),
                         dataType: "json",
                         /*beforeSend: function() {
                          $('#loadingId').show();
@@ -138,8 +138,8 @@
                             if (response.success === true) {
                                 showAddToast();
 
-                                $("#categoryForm")[0].reset();
-                                $("#addcategoryModal").modal("hide");
+                                $("#paymentTypeForm")[0].reset();
+                                $("#addpaymentTypeModal").modal("hide");
                                 table.ajax.reload(null, false);
                             }else{
                                 if (response.data != null) {
@@ -176,7 +176,7 @@
 
 
         //FUNCTION UPDATE DEVIS
-        function editCategory(id){
+        function editPaymentType(id){
             if(id) {
                 // remove the error
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
@@ -186,10 +186,10 @@
                 // $("#editPicture").val('');
                 $('#editLoadingId').hide();
                 // remove the id
-                $("#category_edit_id").remove();
+                $("#paymentType_edit_id").remove();
                 // fetch the member data
                 $.ajax({
-                    url:"/categories/"+id,
+                    url:"/paymentTypes/"+id,
                     type: 'get',
                     dataType: 'json',
                     success:function(response) {
@@ -199,18 +199,18 @@
                         $("#editDescriptionId").val(response.description);
 
 
-                        $("#editcategoryForm").append('<input type="hidden" name="id" id="category_edit_id" value="'+response.id+'"/>');
+                        $("#editpaymentTypeForm").append('<input type="hidden" name="id" id="paymentType_edit_id" value="'+response.id+'"/>');
                         // here update the member data
-                        $("#btnUpdatecategoryId").unbind('click').bind('click', function(){
+                        $("#btnUpdatepaymentTypeId").unbind('click').bind('click', function(){
 
                             // remove error messages
                             $(".text-danger").remove();
                         
-                                var idcategory =$("#category_edit_id").val();
+                                var idpaymentType =$("#paymentType_edit_id").val();
                                 $.ajax({
-                                    url:"/categories/"+idcategory,
+                                    url:"/paymentTypes/"+idpaymentType,
                                     type:'PUT',
-                                    data:$("#editcategoryForm").serialize(),
+                                    data:$("#editpaymentTypeForm").serialize(),
                                     dataType :"json",
                                     /* beforeSend: function() {
                                      $('#editLoadingId').show();
@@ -220,7 +220,7 @@
                                         if(response.status === true) {
                                             showUpdateToast();
 
-                                            $("#editCategoryModal").modal("hide");
+                                            $("#editPaymentTypeModal").modal("hide");
                                             // reload the datatables
                                             table.ajax.reload(null, false);
                                             // remove the error
@@ -228,7 +228,7 @@
                                             $(".text-danger").remove();
 
                                             // remove the id
-                                            $("#category_edit_id").remove();
+                                            $("#paymentType_edit_id").remove();
                                         } else {
                                             showErrorToast();
                                             $(".edit-messages").html('<div class="alert alert-danger alert-dismissible" role="alert">'+
@@ -263,7 +263,7 @@
 
         //FUNCTION DELETE COMUNNE
 
-        function removeCategory(id){
+        function removePaymentType(id){
             if(id) {
                 $(".removeMessages").html('');
                 // click on remove button
@@ -276,7 +276,7 @@
                     });
                     
                     $.ajax({
-                        url: "/categories/"+id,
+                        url: "/paymentTypes/"+id,
                         type: 'DELETE',
                         dataType: 'json',
                         success:function(response) {
@@ -285,7 +285,7 @@
                                 // refresh the table
                                 table.ajax.reload(null, false);
                                 // close the modal
-                                $("#removeCategoryModal").modal('hide');
+                                $("#removePaymentTypeModal").modal('hide');
 
                             } else {
                                 showErrorToast();
@@ -332,7 +332,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Liste Categorie</h1>
+                        <h1>Liste Type de reglement</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -346,7 +346,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <button class="btn btn-success" data-toggle="modal" data-target="#addcategoryModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addpaymentTypeModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -395,19 +395,19 @@
 </div>
 <!-- ./wrapper -->
 <!-- Add product Modal-->
-<div class="modal fade" id="addcategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addpaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    NOUVELLE CATEGORIE</h5>
+                    NOUVELLE TYPE REGLEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!--FORMULIARE-->
-                <form id="categoryForm" autocomplete="off">
+                <form id="paymentTypeForm" autocomplete="off">
                     
                      {{csrf_field()}}
                    
@@ -430,7 +430,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" id="btnAddcategoryId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+                <button class="btn btn-success" id="btnAddpaymentTypeId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -439,19 +439,19 @@
 <!-- Fin add product -->
 
 <!-- Edit product Modal-->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabels">
-                    MODIFIER CATEGORIE</h5>
+                    MODIFIER TYPE REGLEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!--FORMULIARE-->
-                <form id="editcategoryForm" autocomplete="off">
+                <form id="editpaymentTypeForm" autocomplete="off">
                       {{csrf_field()}}
                     <div class="messages"></div>
 
@@ -472,7 +472,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" id="btnUpdatecategoryId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+                <button class="btn btn-success" id="btnUpdatepaymentTypeId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -481,13 +481,13 @@
 <!-- Fin update product -->
 
 <!-- delete product modal-->
-<div class="modal fade" id="removeCategoryModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="removePaymentTypeModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
                 <h4 class="modal-title" id="defaultModalLabel">
-                    SUPPRIMER CATEGORIE</h4>
+                    SUPPRIMER TYPE REGLEMENT</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

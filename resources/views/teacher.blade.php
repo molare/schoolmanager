@@ -76,13 +76,40 @@
     -webkit-transform: scale(1.1);
     transform: scale(3.1)
 }
+#loadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+
+#editLoadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
 </style> 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
 
         var table;
         $(document).ready(function(){
-            
+            $('#loadingId').hide(); 
             $('[data-mask]').inputmask()
             table= $('#teacherTable').DataTable({
                 "responsive": true,
@@ -173,12 +200,12 @@
                         processData : false,
                         contentType:false,
                         //dataType: "json",
-                        /*beforeSend: function() {
+                        beforeSend: function() {
                          $('#loadingId').show();
-                         },*/
+                         },
                         success: function (response) {
                             console.log(response);
-                            // $('#loadingId').hide();
+                           $('#loadingId').hide();
                             // remove the error
                             $(".form-group").removeClass('has-error').removeClass('has-success');
                             if (response.success === true) {
@@ -204,6 +231,7 @@
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);
+                         $('#loadingId').hide();
                        if(jqXHR.responseJSON.errors.first_name !==undefined){
                              $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.first_name+'</p>');
                              }
@@ -279,9 +307,9 @@
                                     contentType:false,
                                     cache: false,
                                     //dataType :"json",
-                                    /* beforeSend: function() {
+                                     beforeSend: function() {
                                      $('#editLoadingId').show();
-                                     },*/
+                                     },
                                     success:function(response) {
                                         console.log(response)
                                         if(response.status === true) {
@@ -629,6 +657,9 @@
                 <form id="teacherForm" autocomplete="off" enctype="multipart/form-data">
                     
                      {{csrf_field()}}
+                  <div id="loadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
                     <div class="messages"></div>
                     
                     <div class="row">
@@ -761,6 +792,9 @@
                 <!--FORMULIARE-->
                 <form id="editteacherForm" autocomplete="off">
                       {{csrf_field()}}
+                 <div id="editLoadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="messages"></div>
                     

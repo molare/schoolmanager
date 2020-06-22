@@ -20,7 +20,7 @@ class StudentController extends Controller
     public function index()
     {
         $sqlQuery ='SELECT t.id,t.first_name, t.last_name,t.phone, t.email, t.photo,t.adresse,'
-                . ' t.created_at, t.photo, c.name AS classe, g.name AS genre, t.active AS active, t.birth_date, t.register_number '
+                . ' t.created_at, t.photo, c.name AS classe, g.name AS genre, t.active AS active, t.birth_date, t.register_number, t.rest '
                 . ' FROM students AS t, class_rooms c, genres g'
                 . ' WHERE t.classe_id = c.id '
                 . ' AND t.genre_id = g.id';
@@ -29,6 +29,7 @@ class StudentController extends Controller
       
        $rows =array();
            foreach ($res as $value){
+            
                 $student = new student;
                 $student->id=$value->id;
                 $student->first_name = $value->first_name;
@@ -42,15 +43,24 @@ class StudentController extends Controller
                 $student->created_at = $value->created_at;
                 $student->photo = $value->photo;
                 $student->register_number =$value->register_number; 
+                $student->total = $value->rest;
                 $activeStatus = $value->active;
-                
                if($activeStatus==1){
                $active_status=  '<td><span class="badge badge-success">Oui</span></td>';
                }else{
                $active_status=  '<td><span class="badge badge-danger">Non</span></td>';    
                }
-                $student->active =$active_status;
-                 array_push($rows,$student);
+               $student->active =$active_status;
+                
+               $statusPay = $value->rest;
+               if(intval($statusPay)<=0){
+               $statusPayTransient=  '<td><span class="badge badge-success">Soldé</span></td>';
+               }else{
+               $statusPayTransient=  '<td><span class="badge badge-danger">Non Soldé</span></td>';    
+               }
+               $student->rest =$statusPayTransient;
+                
+                array_push($rows,$student);
             } 
          
            return $rows;                
@@ -92,6 +102,8 @@ class StudentController extends Controller
               $student->pay_status =1;
               $student->adresse = $request->get('adresse');
               $student->register_number =$request->get('registerNumber');
+              $classe = ClassRoom::find($request->get('classe'));
+              $student->rest = $classe->scolarite;
                
               if ($request->hasFile('file')) {
                 $image = $request->file('file');
@@ -124,13 +136,52 @@ class StudentController extends Controller
      */
     public function show($id)
     {
+       $json;
        $student = student::find($id);
         $student->classe = ClassRoom::find($student->classe_id);
         $student->genre_id = Genre::find($student->genre_id);
         $student->schoolYear = SchoolYear::find($student->school_year_id);
         $student->parente = Parente::find($student->parente_id);
         $student->parenteGenre = Genre::find($student->parente->genre_id);
-        return $student; 
+        $sql ='SELECT t.id,t.first_name, t.last_name,t.phone, t.email, t.photo,t.adresse,'
+                . ' t.created_at,c.name AS classe, g.name AS genre, t.active AS active, t.birth_date, t.register_number,'
+                . ' p.amount, p.date_payment, c.scolarite AS scolarite, pt.name AS type, '
+                .' (SELECT COALESCE(SUM(py.amount),0) FROM payments AS py, students st WHERE py.student_id = st.id
+                    AND st.id = t.id) AS total '
+                . ' FROM payments AS p, students AS t, class_rooms c, genres g, payment_types AS pt '
+                . ' WHERE p.student_id = t.id '
+                . ' AND t.classe_id = c.id '
+                . ' AND t.genre_id = g.id '
+                . ' AND p.payment_type_id = pt.id ' 
+                . ' AND t.id = '.$student->id;
+
+            $result = DB::select($sql);
+        
+            $rows =array();
+           foreach ($result as $value){
+                $payment = new \App\Models\Payment;
+                $payment->id=$value->id;
+                $payment->first_name = $value->first_name;
+                $payment->last_name =$value->last_name;
+                $payment->genre_id = $value->genre;
+                $payment->classe = $value->classe;
+                $payment->amount = $value->amount;
+                $payment->rest = $value->scolarite-$value->amount;
+                $payment->created_at = $value->created_at;
+                $payment->register_number =$value->register_number; 
+                $payment->date_payment = $value->date_payment;
+                $payment->type = $value->type;
+                $payment->total =$value->scolarite-$value->total;
+                $payment->totalPay = $value->total;
+                 array_push($rows,$payment);
+            }
+            if($rows !==[]){
+              
+            $json = response()->json(array('data' => $student, 'payment' => $rows), 200);
+            }else{
+              $json = response()->json(array('data' => $student, 'scolarite' => $student->classe->scolarite, 'payment' => 0), 200);  
+            }
+        return $json; 
     }
 
     /**

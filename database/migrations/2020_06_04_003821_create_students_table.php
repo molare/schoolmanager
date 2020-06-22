@@ -25,7 +25,7 @@ class CreateStudentsTable extends Migration
             $table->integer('active');
             $table->string('adresse')->nullable(true);
             $table->string('register_number');
-            
+            $table->double('rest');
             $table->index('parente_id');
             $table->unsignedBigInteger('parente_id')->nullable(false);
             $table->foreign('parente_id')

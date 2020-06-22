@@ -24,15 +24,32 @@
                         <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block" id="userId"></a>
                     </div>
                 </div>
+             <div> 
+           <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->username }}</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <!-- Level two dropdown-->
+              <li class="dropdown-item dropdown-hover">
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                  document.getElementById('logout-form').submit();">
+                     Deconnecter
+                 </a>
+
+                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                     @csrf
+                 </form>
+                </li>
+          </div>       
+                
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
-                    <a href="{{route('home')}}/"  class="nav-link">
+                    <a href="{{route('home')}}"  class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Tableau de bord
@@ -172,6 +189,17 @@
                     </a>
                 </li>
                 
+                <li class="nav-header">SCEANCE
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa fa-book"></i>
+                        <p>
+                            Liste Scéance
+                        </p>
+                    </a>
+                </li>
+                
                 
                 <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -184,7 +212,7 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                          <a href="{{route('category')}}"  class="nav-link">
+                          <a href="{{route('paymentType')}}"  class="nav-link">
                            <i class="far fa-circle nav-icon"></i>
                             <p>
                                 Type 
@@ -193,7 +221,7 @@
                         </li>
 
                         <li class="nav-item">
-                          <a href="{{route('teacher')}}" class="nav-link">
+                          <a href="{{route('payment')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>
                                 Scolarité

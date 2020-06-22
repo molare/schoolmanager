@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['auth'])->group(function () {   
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('index');
-})->name("home");
+})->name("home");*/
 
 Route::get('/category', function () {
     return view('category');
@@ -49,6 +50,14 @@ Route::get('/student', function () {
     return view('student');
 })->name('student');
 
+Route::get('/paymentType', function () {
+    return view('paymentType');
+})->name('paymentType');
+
+Route::get('/payment', function () {
+    return view('payment');
+})->name('payment');
+
 Route::get('/getSchoolYearActive', 
 'SchoolYearController@getSchoolYearActive');
 Route::resource('categories','CategoryController');
@@ -59,7 +68,10 @@ Route::resource('courses','CourseController');
 Route::resource('teachers','TeacherController');
 Route::resource('parents','ParentController');
 Route::resource('students','StudentController');
+Route::resource('paymentTypes','PaymentTypeController');
+Route::resource('payments','PaymentController');
+Route::get('/home', 'HomeController@index')->name('home');
+});
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('logout', 'Auth/LoginController@logout');

@@ -43,12 +43,41 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
+    <style>
+        #loadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+
+#editLoadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+    </style>
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
 
         var table;
         $(document).ready(function(){
-            //$('#loadingId').hide();
+            $('#loadingId').hide();
             table= $('#typeTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
@@ -127,12 +156,12 @@
                         type: 'POST',
                         data: $("#categoryForm").serialize(),
                         dataType: "json",
-                        /*beforeSend: function() {
+                        beforeSend: function() {
                          $('#loadingId').show();
-                         },*/
+                         },
                         success: function (response) {
                             console.log(response);
-                            // $('#loadingId').hide();
+                             $('#loadingId').hide();
                             // remove the error
                             $(".form-group").removeClass('has-error').removeClass('has-success');
                             if (response.success === true) {
@@ -158,6 +187,7 @@
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);
+                         $('#loadingId').hide();
                         if(jqXHR.responseJSON.errors.name !==undefined){
                              $("#nameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.name+'</p>');
                              }
@@ -212,11 +242,11 @@
                                     type:'PUT',
                                     data:$("#editcategoryForm").serialize(),
                                     dataType :"json",
-                                    /* beforeSend: function() {
+                                    beforeSend: function() {
                                      $('#editLoadingId').show();
-                                     },*/
+                                     },
                                     success:function(response) {
-                                        //$('#editLoadingId').hide();
+                                        $('#editLoadingId').hide();
                                         if(response.status === true) {
                                             showUpdateToast();
 
@@ -410,6 +440,9 @@
                 <form id="categoryForm" autocomplete="off">
                     
                      {{csrf_field()}}
+                 <div id="loadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
                    
                     <div class="messages"></div>
 
@@ -453,6 +486,9 @@
                 <!--FORMULIARE-->
                 <form id="editcategoryForm" autocomplete="off">
                       {{csrf_field()}}
+                 <div id="editLoadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
                     <div class="messages"></div>
 
                     <div class="form-group">

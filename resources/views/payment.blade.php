@@ -84,12 +84,12 @@
 
         var table;
         $(document).ready(function(){
-            
+
             $('[data-mask]').inputmask()
-            table= $('#studentTable').DataTable({
+            table= $('#paymentTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('students.index')}}",
+                //"sAjaxSource":"{{route('payments.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
@@ -115,7 +115,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('students.index')}}",
+                    "url" :"{{route('payments.index')}}",
                     "dataSrc" :""
 
                 },
@@ -124,17 +124,14 @@
                     [1, 'asc']
                 ], "columns":[
                     {"data":"dateFormat"},
-                    {"data":"image"},
+                     {"data":"date_payment"},
                     {"data":"genre_id"},
                     {"data":"register_number"},
                     {"data": "first_name"},
                     {"data":"last_name"},
-                    {"data":"birth_date"},
                     {"data":"classe"},
-                    {"data":"email"},
-                    {"data":"phone"},
-                    {"data":"adresse"},
-                    {"data":"active"},
+                    {"data":"amount"},
+                    {"data":"rest"},
                     {"data":"action"}
 
                 ],
@@ -151,42 +148,39 @@
 
             });
             //FIN DATATABLE
-            
-      /*$('#birthDateId').daterangepicker({
-      timePicker: true,
-      timePickerIncrement: 30,
-      locale: {
-        format: 'DD/MM/YYYY'
-      }
-    });*/
-    $('#birthDateId').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+   
+  
 
             //IF OPEN MODAL
             $("#btnAddNew").click(function(){
-                $("#studentForm")[0].reset();
+            $("#pictureId").html('<img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />');
+
+                $("#paymentForm")[0].reset();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 $('#loadingId').hide();
                 $(".messages").html("");
                 getSchoolYearActive();
-                parentOption();
-                classeOption();
-                genreOption();
+
+                studentOption();
+                $('#studentId').change(function(){
+                    getImageAndClasseOption($(this).val())
+                });
+                //classeOption();
+                paymenttypeOption();
 
             });
 
             //FONCTION ADD DEVIS
-            $("#btnAddstudentId").on('click', function(){
+            $("#btnAddpaymentId").on('click', function(){
                 $(".text-danger").remove();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
-              var form_data = new FormData($('#studentForm')[0]);
+              //var form_data = new FormData($('#paymentForm')[0]);
                     $.ajax({
-                        url: "{{route('students.store')}}",
+                        url: "{{route('payments.store')}}",
                         type: 'POST',
-                        data:form_data,
-                        processData : false,
-                        contentType:false,
-                        //dataType: "json",
+                        data:$("#paymentForm").serialize(),
+                        dataType: "json",
                         /*beforeSend: function() {
                          $('#loadingId').show();
                          },*/
@@ -198,8 +192,8 @@
                             if (response.success === true) {
                                 showAddToast();
 
-                                $("#studentForm")[0].reset();
-                                $("#addstudentModal").modal("hide");
+                                $("#paymentForm")[0].reset();
+                                $("#addpaymentModal").modal("hide");
                                 table.ajax.reload(null, false);
                             }else{
                                 if (response.data != null) {
@@ -236,7 +230,7 @@
 
 
         //FUNCTION UPDATE DEVIS
-        function editStudent(id){
+        function editPayment(id){
             if(id) {
                 // remove the error
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
@@ -248,39 +242,31 @@
                 $("#editSchoolYearActiveId").html("");
                 $("#editSchoolYearActive").val("");
                 // remove the id
-                $("#student_edit_id").remove();
+                $("#payment_edit_id").remove();
                 // fetch the member data
                 $.ajax({
-                    url:"/students/"+id,
+                    url:"/payments/"+id,
                     type: 'get',
                     dataType: 'json',
                     success:function(response) {
                         console.log(response);
-                         editClasseOption(response.classe.id,response.classe.name);
-                         editParentOption(response.parente.id,response.parente.first_name+' '+response.parente.last_name)
-                         editGenreOption(response.genre_id.id,response.genre_id.name);
-                         $("#editRegisterNumberId").val(response.register_number)
-                         $("#editFirstNameId").val(response.first_name);
-                         $("#editLastNameId").val(response.last_name);
-                         $("#editEmailId").val(response.email);
-                         $("#editAdresseId").val(response.adresse);
-                         $("#editPhoneId").val(response.phone);
-                         $("#editCelId").val(response.cel);
-                         $('#editBirthDateId').val(response.birth_date);
-                         $("#editPictureId").html(response.editImage);
-                         $("#editSchoolYearActive").val(response.schoolYear.name);
-                         $("#editSchoolYearActiveId").append('<option value='+response.schoolYear.id+'>'+response.schoolYear.name+'</option>');
+                         //editClasseOption(response.classe.id,response.classe.name);
+                         editStudentOption(response.student.id,response.student.first_name+' '+response.student.last_name)
+                         editPaymentTypeOption(response.data.payment_type.id,response.data.payment_type.name);
+                         $("#editSchoolYearActive").val(response.student.schoolYear.name);
+                         $("#editDatePaymentId").val(response.data.date_payment);
+                         $("#editAmountId").val(response.data.amount);
+                         $("#editDescriptionId").val(response.data.description);
+                        $("#editSchoolYearActiveId").append('<option value='+response.student.schoolYear.id+'>'+response.student.schoolYear.name+'</option>');
 
-
-
-                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.id+'"/>');
+                        $("#editpaymentForm").append('<input type="hidden" name="id" id="payment_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
-                        $("#btnUpdatestudentId").unbind('click').bind('click', function(){
+                        $("#btnUpdatepaymentId").unbind('click').bind('click', function(){
 
                             // remove error messages
                             $(".text-danger").remove();
-                            var editForm_data = new FormData($('#editstudentForm')[0]);
-                                var idstudent =$("#student_edit_id").val();
+                            var editForm_data = new FormData($('#editpaymentForm')[0]);
+                                var idpayment =$("#payment_edit_id").val();
                                   $.ajaxSetup({
                                     headers: {
                                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -288,12 +274,10 @@
                                 });
                                 
                                 $.ajax({
-                                    url:"/students/"+idstudent,
+                                    url:"/payments/"+idpayment,
                                     type:'POST',
-                                    data:editForm_data,//$("#editCustomerForm").serialize(),
-                                    processData : false,
-                                    contentType:false,
-                                    cache: false,
+                                    data:$("#editpaymentForm").serialize(),
+                                  
                                     //dataType :"json",
                                     /* beforeSend: function() {
                                      $('#editLoadingId').show();
@@ -305,7 +289,7 @@
                                         if(response.status === true) {
                                             showUpdateToast();
 
-                                            $("#editStudentModal").modal("hide");
+                                            $("#editPaymentModal").modal("hide");
                                             // reload the datatables
                                             table.ajax.reload(null, false);
                                             // remove the error
@@ -313,7 +297,7 @@
                                             $(".text-danger").remove();
 
                                             // remove the id
-                                            $("#student_edit_id").remove();
+                                            $("#payment_edit_id").remove();
                                         } else {
                                             showErrorToast();
                                             $(".edit-messages").html('<div class="alert alert-danger alert-dismissible" role="alert">'+
@@ -348,7 +332,7 @@
 
         //FUNCTION DELETE COMUNNE
 
-        function removeStudent(id){
+        function removePayment(id){
             if(id) {
                 $(".removeMessages").html('');
                 // click on remove button
@@ -359,9 +343,9 @@
                             _token: $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    
+
                     $.ajax({
-                        url: "/students/"+id,
+                        url: "/payments/"+id,
                         type: 'DELETE',
                         dataType: 'json',
                         success:function(response) {
@@ -371,7 +355,7 @@
                                 // refresh the table
                                 table.ajax.reload(null, false);
                                 // close the modal
-                                $("#removeStudentModal").modal('hide');
+                                $("#removePaymentModal").modal('hide');
 
                             } else {
                                 showErrorToast();
@@ -383,6 +367,7 @@
                         },
                         error: function(jqXHR, textStatus, errorThrown){
                             showErrorToast();
+                             console.log(jqXHR);
                             /*if(jqXHR.status ==403){
                              window.location = window.origin + "/spring-boot-apps/errorAuthorise";
                              }else {
@@ -437,18 +422,18 @@
         }
     //FIN
     //
-     //GENRE OPTION
-            function genreOption(){
+     //PAYMENTTYPE OPTION
+            function paymenttypeOption(){
             $.ajax({
-                url:"{{route('genres.index')}}",
+                url:"{{route('paymentTypes.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
-                    $("#genreId").html('');
-                    $("#genreId").append('<option value='+0+'>'+' '+'</option>');
+                    $("#paymentTypeId").html('');
+                    $("#paymentTypeId").append('<option value='+0+'>'+' '+'</option>');
                     $.each(response, function(key, val){
-                       $("#genreId").append('<option value='+val.id+'>'+val.name+'</option>');
+                       $("#paymentTypeId").append('<option value='+val.id+'>'+val.name+'</option>');
                     });
                 }
             });
@@ -457,18 +442,18 @@
     
     
       //LIST EDIT product OPTION
-        function editGenreOption(valId, valText){
+        function editPaymentTypeOption(valId, valText){
             $.ajax({
-                url:"{{route('genres.index')}}",
+                url:"{{route('paymentTypes.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
-                    $("#editGenreId").html('');
-                    $("#editGenreId").append('<option value='+valId+'>'+valText+'</option>');
+                    $("#editPaymentTypeId").html('');
+                    $("#editPaymentTypeId").append('<option value='+valId+'>'+valText+'</option>');
                     $.each(response, function(key, val){
                         if(valId!=val.id){
-                        $("#editGenreId").append('<option value='+val.id+'>'+val.name+'</option>');
+                        $("#editPaymentTypeId").append('<option value='+val.id+'>'+val.name+'</option>');
                         }
                     });
                 }
@@ -476,19 +461,35 @@
         }
     //FIN
     
-      //PARENT OPTION
-            function parentOption(){
+      //STUDENT OPTION
+            function studentOption(){
             $.ajax({
-                url:"{{route('parents.index')}}",
+                url:"{{route('students.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
-                    $("#parentId").html('');
-                    $("#parentId").append('<option value='+0+'>'+' '+'</option>');
+                    $("#studentId").html('');
+                    $("#studentId").append('<option value='+0+'>'+' '+'</option>');
                     $.each(response, function(key, val){
-                       $("#parentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
+                       $("#studentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
                     });
+                }
+            });
+        }
+        
+          function getImageAndClasseOption(studentId){
+            $.ajax({
+                url:"/students/"+studentId,
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                     console.log("response11");
+                    console.log(response);
+                     console.log("response22");
+                     $("#pictureId").html(response.data.editImage);
+                     $("#classeDisableId").val(response.data.classe.name);
+                    
                 }
             });
         }
@@ -496,18 +497,18 @@
     
     
       //LIST EDIT product OPTION
-        function editParentOption(valId, valText){
+        function editStudentOption(valId, valText){
             $.ajax({
-                url:"{{route('parents.index')}}",
+                url:"{{route('students.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
-                    $("#editParentId").html('');
-                    $("#editParentId").append('<option value='+valId+'>'+valText+'</option>');
+                    $("#editStudentId").html('');
+                    $("#editStudentId").append('<option value='+valId+'>'+valText+'</option>');
                     $.each(response, function(key, val){
                         if(valId!=val.id){
-                        $("#editParentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
+                        $("#editStudentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
                         }
                     });
                 }
@@ -515,58 +516,7 @@
         }
     //FIN
     
-    //FUNCTION INFO
-        function infoStudent(id){
-            if(id) {
-                // remove the error
-                $(".col-md-4").removeClass('has-error').removeClass('has-success');
-                $(".text-danger").remove();
-                // empty the message div
-                $(".edit-messages").html("");
-                // $("#editPicture").val('');
-                $('#editLoadingId').hide();
-                // remove the id
-                $("#student_edit_id").remove();
-                // fetch the member data
-                $.ajax({
-                    url:"/students/"+id,
-                    type: 'get',
-                    dataType: 'json',
-                    success:function(response) {
-                        console.log(response);
-                        
-                        /*Student details*/
-                         $("#editClasseIds").html(response.classe.name);
-                         $("#editMatIds").html(response.register_number);
-                         $("#editGenreIds").html(response.genre_id.name)
-                         $("#editFirstNameIds").html(response.first_name);
-                         $("#editLastNameIds").html(response.last_name);
-                         $("#editEmailIds").html(response.email);
-                         $("#editAdresseIds").html(response.adresse);
-                         $("#editPhoneIds").html(response.phone);
-                         $("#editCelIds").html(response.cel);
-                         $("#editPictureIds").html(response.infoImage);
-                         $("#editDateIds").html(response.dateFormat);
-                         
-                         /*Parents details*/
-                         $("#editGenreParentIds").html(response.parenteGenre.name)
-                         $("#editNameParentIds").html(response.parente.first_name+' '+response.parente.last_name);
-                         $("#editEmailParentIds").html(response.parente.email);
-                         $("#editAdresseParentIds").html(response.parente.adresse);
-                         $("#editPhoneParentIds").html(response.parente.phone);
-                         $("#editCelParentIds").html(response.parente.cel);
-                         $("#editDateParentIds").html(response.parente.dateFormat);
-                        
-
-                        $("#editstudentForm").append('<input type="hidden" name="id" id="student_edit_id" value="'+response.id+'"/>');
-                        
-                    }
-                }); //fetch selected member info
-
-            } else {
-                alert("Error : Refresh the page again");
-            }
-        }
+   
         
         
           function getSchoolYearActive(){
@@ -603,7 +553,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Liste Etudiant</h1>
+                        <h1>Liste Reglment</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -617,28 +567,25 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <button class="btn btn-success" data-toggle="modal" data-target="#addstudentModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addpaymentModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="responsive-data-table">
-                                <table id="studentTable"  class="table dt-responsive nowrap table-hover  table-striped" >
+                                <table id="paymentTable"  class="table dt-responsive nowrap table-hover  table-striped" >
                                     <thead>
                                     <tr>
                                         
                                         <th>Date création</th>
-                                        <th>Photo</th>
+                                        <th>Date Reglement</th>
                                         <th>Sexe</th>
                                         <th>Matricule</th>
                                         <th>Nom</th>
                                         <th>Prenom</th>
-                                        <th>Date Naissance</th>
                                         <th>Classe</th>
-                                         <th>Email</th>
-                                         <th>Téléphone</th>
-                                         <th>Adresse</th>
-                                         <th data-priority ="1">Active</th>
-                                         <th data-priority ="2">Action</th>
+                                        <th>Montant Versé</th>
+                                        <th>Montant à payer</th>
+                                        <th data-priority ="1">Action</th>
                                     </tr>
                                     </thead>
 
@@ -646,18 +593,15 @@
                                     <tr>
                                        
                                         <th>Date création</th>
-                                         <th>Photo</th>
+                                        <th>Date Reglement</th>
                                         <th>Sexe</th>
-                                         <th>Matricule</th>
+                                        <th>Matricule</th>
                                         <th>Nom</th>
                                         <th>Prenom</th>
-                                        <th>Date Naissance</th>
                                         <th>Classe</th>
-                                         <th>Email</th>
-                                         <th>Téléphone</th>
-                                         <th>Adresse</th>
-                                         <th data-priority ="1">Active</th>
-                                         <th data-priority ="2">Action</th>
+                                        <th>Montant Versé</th>
+                                        <th>Montant à payer</th>
+                                         <th data-priority ="1">Action</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -684,152 +628,109 @@
 </div>
 <!-- ./wrapper -->
 <!-- Add product Modal-->
-<div class="modal fade" id="addstudentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addpaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    NOUVEAU ETUDIANT</h5>
+                    NOUVEAU REGLEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!--FORMULIARE-->
-                <form id="studentForm" autocomplete="off" enctype="multipart/form-data">
+                <form id="paymentForm" autocomplete="off" >
                     
                      {{csrf_field()}}
                     <div class="messages"></div>
                     
-                    <div class="row">
-                           <div class="col-sm-6">
-                            <label class="control-label col-md-12">Matricule</label>
-                            <div class="col-md-12">
-                                <input name="registerNumber" id="registerNumberId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                     <div class="col-sm-6">
-                            <label class="control-label col-md-12">Année Scolaire</label>
-                            <div class="col-md-12">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                         <div class="form-group">
+                          <div class="" id="pictureId">
+                          <img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />
+                          </div>
+                       </div>
+                       </div> 
+                        
+                        <div class="col-sm-6">
+                            <label class="control-label col-sm-4">Année Scolaire</label>
+                            <div class="col-md-4">
                                 <input name="schoolYearActive" id="schoolYearActive" class="form-control" type="text" disabled="true">
-                            <span class="help-block"></span>
-                            </div>
+                           </div>
+                              <span class="help-block"></span>
                         </div>
-                       
-                     </div>   
-                  <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Sexe</label>
-                            <div class="col-md-12">
-                                <select class="form-control" id="genreId" name="genre">
-                                </select>
-                            </div>
-                        </div>
-                      
-                      <div class="col-sm-6">
-                            <label class="control-label col-md-12">Classe</label>
-                            <div class="col-md-12">
-                                <select class="form-control select2" id="classeId" name="classe"></select>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Nom</label>
-                            <div class="col-md-12">
-                                <input name="firstName" id="firstNameId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Prénom</label>
-                            <div class="col-md-12">
-                                <input name="lastName" id="lastNameId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div>
+                     </div> 
                     
-               <!-- Date range -->
-
-                    <div class="row">
-                             <div class="col-sm-6">
-                                 <label class="control-label col-md-12">Date Naissance</label>
-                                 <div class="input-group col-md-12">
+                     <div class="form-group row">
+                         <div class="col-sm-6">
+                              <label class="control-label col-sm-6">Date Reglement</label>
+                              <div class="input-group col-md-12">
                                      <div class="input-group-prepend">
                                          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                      </div>
-                                     <input name="birthDate" id="birthDateId" class="form-control" type="text" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
+                                     <input name="datePayment" id="datePaymentId" class="form-control" type="text" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                      <span class="help-block"></span>
-                                 </div>
-                             </div>
-
-                             <div class="col-sm-6">
-                                 <label class="control-label col-md-12">Tuteur</label>
-                                 <div class="col-md-12">
-                                     <select class="form-control select2" id="parentId" name="parent"></select>
-                                     <span class="help-block"></span>
-                                 </div>
-                             </div>
-                    </div>
-            
-
-                    <div class="row">
+                               </div>
+                         </div>
+                         
+                          <div class="col-sm-6">
+                             <label class="control-label col-sm-6">Type Reglement</label>
+                            <div class="col-md-12">
+                                <select class="form-control" id="paymentTypeId" name="paymentType">
+                                </select>
+                            </div>
+                        </div>
+                     </div> 
+                    
+                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <label class="control-label col-md-12">Telephone1</label>
+                             <label class="control-label col-sm-4">Etudiant</label>
+                                 <div class="col-md-12">
+                                     <select class="form-control select2" id="studentId" name="student"></select>
+                                     <span class="help-block"></span>
+                                 </div>
+                        </div>
+                         
+                         <div class="col-sm-6">
+                             <label class="control-label col-sm-4">Classe</label>
+                                 <div class="col-md-12">
+                                     <input class="form-control" id="classeDisableId" name="classe" readonly="true">
+                                     <span class="help-block"></span>
+                                 </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                         
+                        <div class="col-sm-6">
+                            <label class="control-label col-sm-2">Montant</label>
                             <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                </div>
-                                <input name="phone" id="phoneId" class="form-control" type="text" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
+                                <input name="amount" id="amountId" class="form-control" type="text">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Telephone2</label>
-                            <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                </div>
-                                <input name="cel" id="celId" class="form-control" type="text" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
-                                <span class="help-block"></span>
-                            </div>
+                         <div class="col-sm-6">
+                            <label class="control-label col-sm-6">Moyen de paiement</label>
+                                 <div class="col-md-12">
+                                     <select class="form-control select2" id="payWayId" name="payWay">
+                                         <option value="1">Espèce</option>
+                                         <option value="2">Chèque</option>
+                                         <option value="3">Carte bancaire</option>
+                                     </select>
+                                     <span class="help-block"></span>
+                                 </div>
                         </div>
-                       
                     </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-12">Description</label>
+                        <div class="col-md-12">
+                            <textarea name="description" id="descriptionId" class="form-control"></textarea>
 
-                      <div class="row">
-                          
-                           <div class="col-sm-6">
-                            <label class="control-label col-md-12">Email</label>
-                            <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                </div>
-                                <input class="form-control" id="emailId" name="email" type="text" placeholder="Email">
-                            </div>
-                        </div>
-                          
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Adresse</label>
-                            <div class="col-md-12">
-                            <input name="adresse" id="adresseId" class="form-control" type="text">
-
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div></br></br>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Photo </label>
-                            <div class="col-md-12">
-                                <input type="file" name="file" id="fileId" class="form-control">
-                            </div>
+                            <span class="help-block"></span>
                         </div>
                     </div>
                     
@@ -840,7 +741,7 @@
             
             <div class="modal-footer">
                
-                <button class="btn btn-success" id="btnAddstudentId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+                <button class="btn btn-success" id="btnAddpaymentId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -849,19 +750,19 @@
 <!-- Fin add product -->
 
 <!-- Edit product Modal-->
-<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabels">
-                    MODIFIER ETUDIANT</h5>
+                    MODIFIER REGLEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!--FORMULIARE-->
-                <form id="editstudentForm" autocomplete="off">
+                <form id="editpaymentForm" autocomplete="off">
                       {{csrf_field()}}
                     <input type="hidden" name="_method" value="PUT">
                     <div class="messages"></div>
@@ -871,160 +772,90 @@
                           </div>
                        </div>
                     
-                       <div class="row">
-                           
-                       <div class="col-sm-6">
-                            <label class="control-label col-md-12">Matricule</label>
+                <div class="form-group row">
+                      <label class="control-label col-sm-2">Année Scolaire</label>
+                        <div class="col-sm-6">
                             <div class="col-md-12">
-                                <input name="registerNumber" id="editRegisterNumberId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
+                                <input name="schoolYearActive" id="editSchoolYearActive" class="form-control" type="text" disabled="true">
+                           </div>
+                              <span class="help-block"></span>
                         </div>
-                     <div class="col-sm-6">
-                            <label class="control-label col-md-12">Année Scolaire</label>
-                            <div class="col-md-12">
-                             <input name="editSchoolYearActive" id="editSchoolYearActive" class="form-control" type="text" disabled="true">
-
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                           
-                     </div>
+                     </div> 
                     
-                  <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Sexe</label>
-                            <div class="col-md-12">
-                                <select class="form-control" id="editGenreId" name="genre">
-                                </select>
-                            </div>
-                        </div>
-                      
-                      <div class="col-sm-6">
-                            <label class="control-label col-md-12">Classe</label>
-                            <div class="col-md-12">
-                                <select class="form-control select2" id="editClasseId" name="classe"></select>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Nom</label>
-                            <div class="col-md-12">
-                                <input name="firstName" id="editFirstNameId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Prénom</label>
-                            <div class="col-md-12">
-                                <input name="lastName" id="editLastNameId" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Date range -->
-
-                    <div class="row">
-                             <div class="col-sm-6">
-                                 <label class="control-label col-md-12">Date Naissance</label>
-                                 <div class="input-group col-md-12">
+                     <div class="form-group row">
+                         <label class="control-label col-sm-2">Date Reglement</label>
+                         <div class="col-sm-6">
+                              <div class="input-group col-md-12">
                                      <div class="input-group-prepend">
                                          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                      </div>
-                                     <input name="birthDate" id="editBirthDateId" class="form-control" type="text" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
+                                     <input name="datePayment" id="editDatePaymentId" class="form-control" type="text" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                      <span class="help-block"></span>
-                                 </div>
-                             </div>
-
-                             <div class="col-sm-6">
-                                 <label class="control-label col-md-12">Tuteur</label>
-                                 <div class="col-md-12">
-                                     <select class="form-control select2" id="editParentId" name="parent"></select>
-                                     <span class="help-block"></span>
-                                 </div>
-                             </div>
+                               </div>
+                         </div>
+                     </div> 
+                    
+                  <div class="form-group row">
+                    <label class="control-label col-sm-2">Type Reglement</label>
+                        <div class="col-sm-6">
+                            <div class="col-md-12">
+                                <select class="form-control" id="editPaymentTypeId" name="paymentType">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     
-
-                    <div class="row">
+                     <div class="form-group row">
+                          <label class="control-label col-sm-2">Etudiant</label>
                         <div class="col-sm-6">
-                            <label class="control-label col-md-12">Telephone1</label>
-                            <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                </div>
-                                <input name="phone" id="editPhoneId" class="form-control" type="text" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
-                                <span class="help-block"></span>
-                            </div>
+                                 <div class="col-md-12">
+                                     <select class="form-control select2" id="editStudentId" name="student"></select>
+                                     <span class="help-block"></span>
+                                 </div>
                         </div>
-                        
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Telephone2</label>
-                            <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                </div>
-                                <input name="cel" id="editCelId" class="form-control" type="text" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        
                     </div>
-
-                      <div class="row">
-                          
-                          <div class="col-sm-6">
-                            <label class="control-label col-md-12">Email</label>
+                    
+                    <div class="form-group row">
+                         <label class="control-label col-sm-2">Montant</label>
+                        <div class="col-sm-6">
                             <div class="input-group col-md-12">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                </div>
-                                <input class="form-control" id="editEmailId" name="email" type="text" placeholder="Email">
-                            </div>
-                        </div>
-                          
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Adresse</label>
-                            <div class="col-md-12">
-                            <input name="adresse" id="editAdresseId" class="form-control" type="text">
-
+                                <input name="amount" id="editAmountId" class="form-control" type="text" readonly="true">
                                 <span class="help-block"></span>
-                            </div>
-                        </div>
-                          
-                    </div>
-                     <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Activé</label>
-                            <div class="col-md-12">
-                                <select class="form-control select2" id="editStatutId" name="statut">
-                                    <option value="1">Oui</option>
-                                    <option value="2">Non</option>
-                                </select>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                     </div>
-                    </br></br>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="control-label col-md-12">Photo </label>
-                            <div class="col-md-12">
-                                <input type="file" name="file" id="editFileId" class="form-control">
                             </div>
                         </div>
                     </div>
-                     <select class="form-control" id="editSchoolYearActiveId" name="schoolYear" hidden="true">
-                     </select>
+                    
+                       <div class="form-group row">
+                          <label class="control-label col-sm-2">Moyen de paiement</label>
+                        <div class="col-sm-6">
+                                 <div class="col-md-12">
+                                     <select class="form-control select2" id="editPayWayId" name="payWay">
+                                         <option value="1">Espèce</option>
+                                         <option value="2">Chèque</option>
+                                         <option value="3">Carte bancaire</option>
+                                     </select>
+                                     <span class="help-block"></span>
+                                 </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-12">Description</label>
+                        <div class="col-md-12">
+                            <textarea name="description" id="editDescriptionId" class="form-control"></textarea>
+
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    
+                  <select class="form-control" id="editSchoolYearActiveId" name="schoolYear" hidden="true">
+                 </select>
                 </form>
             </div>
+            
             <div class="modal-footer">
-                <button class="btn btn-success" id="btnUpdatestudentId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+               
+                <button class="btn btn-success" id="btnUpdatepaymentId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -1033,7 +864,7 @@
 <!-- Fin update product -->
 
 <!-- delete product modal-->
-<div class="modal fade" id="removeStudentModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="removePaymentModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -1098,8 +929,8 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#studentOngletDetail" data-toggle="tab">Profile</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#parentOngletDetail" data-toggle="tab">Tuteur</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#paymentOngletDetail" data-toggle="tab">Profile</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#studentOngletDetail" data-toggle="tab">Tuteur</a></li>
                   <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Scolarité</a></li>
                 </ul>
               </div><!-- /.card-header -->
@@ -1107,14 +938,14 @@
                 <div class="tab-content">
                     
                     
-                    <div class="active tab-pane" id="studentOngletDetail">
-                    <form class="form-horizontal" id="studentDetail">
+                    <div class="active tab-pane" id="paymentOngletDetail">
+                    <form class="form-horizontal" id="paymentDetail">
                      <ul class="list-group list-group-unbordered mb-12">
                    <li class="list-group-item">
                     <b>Date d'enregistrement</b> <a class="float-right" id="editDateIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Genre</b> <a class="float-right" id="editGenreIds"></a>
+                    <b>PaymentType</b> <a class="float-right" id="editPaymentTypeIds"></a>
                   </li>
                   <li class="list-group-item">
                     <b>Matricule</b> <a class="float-right" id="editMatIds"></a>
@@ -1142,30 +973,30 @@
                   </div>
                   
                  
-                   <div class="tab-pane" id="parentOngletDetail">
-                   <form class="form-horizontal" id="parentDetail"> 
+                   <div class="tab-pane" id="studentOngletDetail">
+                   <form class="form-horizontal" id="studentDetail"> 
                      <ul class="list-group list-group-unbordered mb-12">
                    <li class="list-group-item">
-                    <b>Date d'enregistrement</b> <a class="float-right" id="editDateParentIds"></a>
+                    <b>Date d'enregistrement</b> <a class="float-right" id="editDateStudentIds"></a>
                   </li>
                   
                    <li class="list-group-item">
-                    <b>Genre</b> <a class="float-right" id="editGenreParentIds"></a>
+                    <b>PaymentType</b> <a class="float-right" id="editPaymentTypeStudentIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Nom et Prénom</b> <a class="float-right" id="editNameParentIds"></a>
+                    <b>Nom et Prénom</b> <a class="float-right" id="editNameStudentIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Téléphone 1</b> <a class="float-right" id="editPhoneParentIds"></a>
+                    <b>Téléphone 1</b> <a class="float-right" id="editPhoneStudentIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Téléphone 2</b> <a class="float-right" id="editCelParentIds"></a>
+                    <b>Téléphone 2</b> <a class="float-right" id="editCelStudentIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Email</b> <a class="float-right" id="editEmailParentIds"></a>
+                    <b>Email</b> <a class="float-right" id="editEmailStudentIds"></a>
                   </li>
                   <li class="list-group-item">
-                    <b>Adresse</b> <a class="float-right" id="editAdresseParentIds"></a>
+                    <b>Adresse</b> <a class="float-right" id="editAdresseStudentIds"></a>
                   </li>
                 </ul>
                      <div class="modal-footer">
