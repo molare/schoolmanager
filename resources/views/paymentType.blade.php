@@ -261,7 +261,7 @@
 
         //FIN UPDATE DEVIS
 
-        //FUNCTION DELETE COMUNNE
+        //FUNCTION DELETE Payment
 
         function removePaymentType(id){
             if(id) {
