@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\Teacher;
+use App\Models\teacher;
 use DB;
 use \App\Models\Category;
 use Illuminate\Support\Facades\File;
@@ -30,7 +30,7 @@ class TeacherController extends Controller
       
        $rows =array();
            foreach ($res as $value){
-                $teacher = new Teacher;
+                $teacher = new teacher;
                 $teacher->id=$value->id;
                 $teacher->first_name = $value->first_name;
                 $teacher->last_name =$value->last_name;
@@ -75,7 +75,7 @@ class TeacherController extends Controller
         $json;
             try {
                
-              $teacher = new Teacher;
+              $teacher = new teacher;
               $teacher->first_name = $request->get('firstName');
               $teacher->last_name = $request->get('lastName');
               $teacher->genre()->associate($request->get('genre'));
@@ -120,7 +120,7 @@ class TeacherController extends Controller
     {
         $json;
         
-        $teacher = Teacher::find($id);
+        $teacher = teacher::find($id);
         $teacher->category_id = Category::find($teacher->category_id);
         $teacher->genre_id = Genre::find($teacher->genre_id);
         $teacher->schoolYear = SchoolYear::find($teacher->school_year_id);
@@ -200,7 +200,7 @@ class TeacherController extends Controller
             try {
                 
                 
-              $teacher = Teacher::find($id);
+              $teacher = teacher::find($id);
               $teacher->first_name =$request->get('firstName');
               $teacher->last_name =$request->get('lastName');
               $teacher->genre()->associate($request->get('genre'));
@@ -248,12 +248,12 @@ class TeacherController extends Controller
     {
            $json;
            try {
-          $teacher = Teacher::find($id);
+          $teacher = teacher::find($id);
             $image_path = public_path('/images/'.$teacher->photo); // get previous image from folder
             if(File::exists($image_path)) {
                    File::delete($image_path);
               }
-              Teacher::destroy($id);
+              teacher::destroy($id);
             $json = response()->json(array('status' => true, 'last_insert_id' => null), 200);
             } catch (\Exception $e) {
 
