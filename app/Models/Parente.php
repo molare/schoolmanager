@@ -12,7 +12,7 @@ class Parente extends Model
  
    
     function genre(){
-       return $this->belongsTo(App\Genre::class);
+       return $this->belongsTo(\App\Models\Genre::class);
     }
     
     function schoolYear(){
