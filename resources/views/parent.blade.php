@@ -631,7 +631,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
                                 </div>
-                                <input class="form-control" id="celId" name="cel" type="text" placeholder="Email" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
+                                <input class="form-control" id="celId" name="cel" type="text" data-inputmask='"mask": "+225 99-99-99-99"' data-mask>
                             </div>
                         </div>
                     </div>
