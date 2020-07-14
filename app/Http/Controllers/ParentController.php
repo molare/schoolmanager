@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\models\Parente;
 use DB;
 use Illuminate\Support\Facades\File;
-use \App\Models\Genre;
-use \App\Models\SchoolYear;
+use App\Models\Genre;
+use App\Models\SchoolYear;
 
 class ParentController extends Controller
 { /**
