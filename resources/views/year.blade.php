@@ -488,11 +488,6 @@
                     <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
                   </div>
                     
-                     <div class="form-group"> <!-- Date input -->
-                    <label class="control-label" for="date">Date</label>
-                    <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
-                  </div>
-
                     <div class="form-group">
                         <label class="control-label col-md-12">Année Scolaire</label>
                         <div class="col-md-12">
