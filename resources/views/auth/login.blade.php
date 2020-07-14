@@ -1,103 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Login</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<title>Gestion</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('logincssjs/css/main.css')}}">
+<!--===============================================================================================-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>GESTION SCOLARITE</b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Entrez vos informations</p>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('logincssjs/images/school.jpg');">
+			<div class="wrap-login100 p-t-30 p-b-50">
+				<span class="login100-form-title p-b-41">
+					Authentification
+				</span>
+				<form class="login100-form validate-form p-b-33 p-t-5" method="POST" action="{{ route('login') }}">
+                                        @csrf
+					<div class="wrap-input100 validate-input" data-validate = "Enter username">
+						<input class="input100" placeholder="Nom" id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                                @error('username')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+					</div>
 
-     <form method="POST" action="{{ route('login') }}">
-            @csrf
-        <div class="input-group mb-3">
-          <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-          @error('username')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        </div>
-        <div class="input-group mb-3">
-          <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-          @error('password')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        </div>
-        <div class="row">
-         <div class="col-2">
-         </div>
-          <!-- /.col -->
-          <div class="col-8">
-            <button type="submit" class="btn btn-success btn-block">Connexion</button>
-          </div>
-          <!-- /.col -->
-          <div class="col-2">
-         </div>
-        </div>
-      </form>
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<input class="input100" placeholder="Mot de passe" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                                 @error('password')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+					</div>
 
-      <div class="social-auth-links text-center mb-3">
-        <p>Ou</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i>Connexion a partir Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Connexion a partir Google+
-        </a>
-      </div>
-      <!-- /.social-auth-links -->
+					<div class="container-login100-form-btn m-t-32">
+						<button class="login100-form-btn" type="submit">
+							Connexion
+						</button>
+					</div>
 
-      <p class="mb-1">
-<!--        <a href="forgot-password.html">I forgot my password</a>-->
-      </p>
-      <p class="mb-0">
-<!--        <a href="register.html" class="text-center">Register a new membership</a>-->
-      </p>
-    </div>
-    <!-- /.login-card-body -->
-  </div>
-</div>
-<!-- /.login-box -->
+				</form>
+			</div>
+		</div>
+	</div>
+	
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{asset('logincssjs/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{asset('logincssjs/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('logincssjs/js/main.js')}}"></script>
 
 </body>
 </html>

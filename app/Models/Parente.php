@@ -38,7 +38,7 @@ class Parente extends Model
     public function getImageAttribute(){
         
         $filename = $this->attributes['photo'];   
-        $image= '<a href="javascript: void(0);"><img src="/images/'.$filename.'" border="0" width="40" class="hvr-shrinks img-rounded" alt="" width="40" height="30"  title=""></a>' ;      
+        $image= '<a href="javascript: void(0);"><img src="/images/'.$filename.'" border="0" width="40" class="img-hover-zoom img-hover-zoom--slowmo" alt="" width="40" height="30"  title=""></a>' ;      
         return $image;
         
     }

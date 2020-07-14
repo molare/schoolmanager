@@ -7,65 +7,94 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- dataTables css -->
-    <link href="plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/responsive.datatables.min.css" rel="stylesheet" type="text/css"/>
+<!--    <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>-->
+    <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/responsive.datatables.min.css')}}" rel="stylesheet" type="text/css"/>
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
-    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Bootstrap Date-Picker Plugin -->
+<!--<link rel="stylesheet" href="{{asset('dist/css/bootstrap-datepicker3.css')}}"/>-->
 
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!--    <script type="text/javascript" src="{{asset('dist/js/bootstrap-datepicker.min.js')}}"></script>-->
+
     <!-- Select2 -->
-    <script src="plugins/select2/js/select2.full.min.js"></script>
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
+    <script src="{{asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- dataTables js -->
-    <script src="plugins/data-tables/jquery.datatables.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.bootstrap4.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.responsive.min.js" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.bootstrap4.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}" type="text/javascript"></script>
     <!-- SweetAlert2 -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->
-    <script src="plugins/toastr/toastr.min.js"></script>
-    <script src="plugins/toast.js"></script>
+    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/toast.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+    <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
+    <style>  
+  #loadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+
+#editLoadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+</style> 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
 
         var table;
         $(document).ready(function(){
-            //$('#loadingId').hide();
-            //getSchoolYearActiveOption();
-             $('[data-mask]').inputmask()
+            $('#loadingId').hide();              
+            $('[data-mask]').inputmask()
             table= $('#typeTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('schoolYears.index",
+                //"sAjaxSource":"{{route('schoolYears.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
                     "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
                     "sInfoPostFix":    "",
-                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
                     "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
@@ -87,7 +116,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('schoolYears.index",
+                    "url" :"{{route('schoolYears.index')}}",
                     "dataSrc" :""
 
                 },
@@ -135,21 +164,21 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               
                     $.ajax({
-                        url: "{{route('schoolYears.store",
+                        url: "{{route('schoolYears.store')}}",
                         type: 'POST',
                         data: $("#shoolYearForm").serialize(),
                         dataType: "json",
-                        /*beforeSend: function() {
+                        beforeSend: function() {
                          $('#loadingId').show();
-                         },*/
+                         },
                         success: function (response) {
                             console.log(response);
-                            // $('#loadingId').hide();
+                             $('#loadingId').hide();
                             // remove the error
                             $(".form-group").removeClass('has-error').removeClass('has-success');
                             if (response.success === true) {
                                 showAddToast();
-                                getSchoolYearActiveOption();    
+                                getSchoolYearActiveOptions();    
                                 $("#shoolYearForm")[0].reset();
                                 $("#addshoolYearModal").modal("hide");
                                 table.ajax.reload(null, false);
@@ -234,14 +263,15 @@
                                     type:'PUT',
                                     data:$("#editshoolYearForm").serialize(),
                                     dataType :"json",
-                                    /* beforeSend: function() {
+                                     beforeSend: function() {
                                      $('#editLoadingId').show();
-                                     },*/
+                                      },
                                     success:function(response) {
+                                        $('#editLoadingId').hide();
                                         console.log(response);
                                         if(response.status === true) {
                                             showUpdateToast();
-                                            getSchoolYearActiveOption();
+                                            getSchoolYearActiveOptions();
 
                                             $("#editSchoolYearModal").modal("hide");
                                             // reload the datatables
@@ -335,17 +365,17 @@
 
         //FIN DELETE DEVIS
 
-    function getSchoolYearActiveOption(){
+    function getSchoolYearActiveOptions(){
             $.ajax({
                 url:"/getSchoolYearActive",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
-                    $("#schoolYearActiveId").html(response.data[0].name);
+                    $("#yearActiveId").html(response.data[0].name);
                 },
                 error: function(jqXHR, textStatus, errorThrown){
-                       console.log(jqXHR);
+                       console.log(textStatus);
                  }
             });
         }
@@ -454,6 +484,14 @@
                      {{csrf_field()}}
                    
                     <div class="messages"></div>
+                  <div id="loadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
+                    
+                     <div class="form-group"> <!-- Date input -->
+                    <label class="control-label" for="date">Date</label>
+                    <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+                  </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-12">Année Scolaire</label>
@@ -486,6 +524,8 @@
                             <span class="help-block"></span>
                         </div>
                     </div>
+                    
+                   
                 </form>
             </div>
             <div class="modal-footer">
@@ -513,6 +553,10 @@
                 <form id="editshoolYearForm" autocomplete="off">
                       {{csrf_field()}}
                     <div class="messages"></div>
+                    
+                  <div id="editLoadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-12">Année Scolaire</label>

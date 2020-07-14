@@ -21,9 +21,11 @@ class StudentController extends Controller
     {
         $sqlQuery ='SELECT t.id,t.first_name, t.last_name,t.phone, t.email, t.photo,t.adresse,'
                 . ' t.created_at, t.photo, c.name AS classe, g.name AS genre, t.active AS active, t.birth_date, t.register_number, t.rest '
-                . ' FROM students AS t, class_rooms c, genres g'
+                . ' FROM students AS t, class_rooms c, genres g, school_years s'
                 . ' WHERE t.classe_id = c.id '
-                . ' AND t.genre_id = g.id';
+                . ' AND t.genre_id = g.id'
+                .'  AND t.school_year_id = s.id '
+                .' AND s.status = 1';
 
      $res = DB::select($sqlQuery);
       
@@ -112,8 +114,8 @@ class StudentController extends Controller
                 $imagePath = $destinationPath. "/".  $name;
                 $image->move($destinationPath, $name);
                 $student->photo = $name;
-              } else{
-                 $student->photo = null;  
+              }else{
+                $student->photo = "";
               }
               
               $student->save();
@@ -131,8 +133,6 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -274,5 +274,95 @@ class StudentController extends Controller
         }
 
          return $json;
+    }
+    
+     public function countStudent()
+    {
+      $json;
+      $sqlQuery ='SELECT COALESCE(COUNT(*),0) AS counter '
+    . ' FROM students AS t, school_years s '
+    . ' WHERE t.school_year_id = s.id '
+    . ' AND s.status = 1';
+
+     $res = DB::select($sqlQuery);
+     $json = response()->json(array('data' => $res), 200);
+     return $json;
+    }
+    
+      public function dashbordStudent()
+    {
+      $json;
+      
+      $sqlQuery ='SELECT COALESCE(COUNT(*),0) AS counter '
+    . ' FROM students AS t, school_years s , genres g'
+    . ' WHERE t.school_year_id = s.id '
+    .'  AND t.genre_id = g.id '           
+    .' AND s.status = 1'
+    .' AND g.id = 1';
+
+     $res = DB::select($sqlQuery);
+     
+     $sqlQueries ='SELECT COALESCE(COUNT(*),0) AS counter '
+    .' FROM students AS t, school_years s , genres g'
+    .' WHERE t.school_year_id = s.id '
+    .'  AND t.genre_id = g.id '           
+    .' AND s.status = 1'
+    .' AND g.id = 2';
+
+     $rest = DB::select($sqlQueries);
+     
+     $json = response()->json(array('data' => $res, 'datas' => $rest), 200);
+     return $json;
+    }
+    
+    public function getStudentByClasse($id){
+         $sqlQuery ='SELECT t.id,t.first_name, t.last_name, t.photo '
+                .' FROM students AS t, class_rooms c, school_years s'
+                .' WHERE t.classe_id = c.id '
+                .' AND t.school_year_id = s.id '
+                .' AND s.status = 1'
+                .' AND t.rest>0'
+                .' AND c.id='.$id ;
+
+     $res = DB::select($sqlQuery);
+      $json = response()->json(array('data' => $res), 200);
+     return $json;
+    }
+    
+    
+      public function getStudentByYear(){
+         
+         $date = date('Y');
+         $previousDate1 = date('Y')-1;
+         $previousDate2 = date('Y')-2;
+         $sqlQuery1 ="SELECT COALESCE(COUNT(*),0) AS counter "
+                ." FROM students AS t, class_rooms c, school_years s"
+                ." WHERE t.classe_id = c.id "
+                ." AND t.school_year_id = s.id "
+                //." AND s.status = 1 "
+                //.' AND t.rest>0 '
+                ." AND s.name like '%".$date."'";
+         
+         $sqlQuery2 ="SELECT COALESCE(COUNT(*),0) AS counter "
+                ." FROM students AS t, class_rooms c, school_years s"
+                ." WHERE t.classe_id = c.id "
+                ." AND t.school_year_id = s.id "
+                //." AND s.status = 1 "
+                //.' AND t.rest>0 '
+                ." AND s.name like '%".$previousDate1."'";
+         
+         $sqlQuery3 ="SELECT COALESCE(COUNT(*),0) AS counter "
+                ." FROM students AS t, class_rooms c, school_years s"
+                ." WHERE t.classe_id = c.id "
+                ." AND t.school_year_id = s.id "
+                //." AND s.status = 1 "
+                //.' AND t.rest>0 '
+                ." AND s.name like '%".$previousDate2."'";
+
+     $res1 = DB::select($sqlQuery1);
+     $res2 = DB::select($sqlQuery2);
+     $res3 = DB::select($sqlQuery3);
+      $json = response()->json(array('data1' => $res1,'data2' => $res2,'data3' => $res3), 200);
+     return $json;
     }
 }

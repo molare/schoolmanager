@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use DB;
 use App\Models\ClassRoom;
 use \App\Http\Requests\ClassRequest;
 class ClassRoomController extends Controller
@@ -124,6 +125,17 @@ class ClassRoomController extends Controller
 
     }
       
+     return $json;
+    }
+    
+    
+      public function countClasse()
+    {
+      $json;
+      $sqlQuery ='SELECT COUNT(*) AS counter FROM class_rooms';
+
+     $res = DB::select($sqlQuery);
+     $json = response()->json(array('data' => $res), 200);
      return $json;
     }
 }

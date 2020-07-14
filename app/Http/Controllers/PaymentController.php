@@ -7,6 +7,7 @@ use \App\Models\Payment;
 use DB;
 use \App\Models\student;
 use \App\Models\SchoolYear;
+use App\Models\ClassRoom;
 class PaymentController extends Controller
 {
     /**
@@ -119,6 +120,7 @@ class PaymentController extends Controller
         $payment->payment_type = \App\Models\PaymentType::find($payment->payment_type_id);
         $student = student::find($payment->student_id);
         $student->schoolYear = SchoolYear::find($student->school_year_id);
+        $student->classe = ClassRoom::find($student->classe_id);
         $json = response()->json(array('data' => $payment, 'student' => $student), 200);
        return $json; 
     }

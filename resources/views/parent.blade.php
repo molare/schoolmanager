@@ -7,46 +7,44 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- dataTables css -->
-    <link href="plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/responsive.datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/responsive.datatables.min.css')}}" rel="stylesheet" type="text/css"/>
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
-    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     
         <!-- Select2 -->
-    <script src="plugins/select2/js/select2.full.min.js"></script>
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
+    <script src="{{asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- dataTables js -->
-    <script src="plugins/data-tables/jquery.datatables.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.bootstrap4.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.responsive.min.js" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.bootstrap4.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}" type="text/javascript"></script>
     <!-- SweetAlert2 -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->
-    <script src="plugins/toastr/toastr.min.js"></script>
-    <script src="plugins/toast.js"></script>
+    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/toast.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+    <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
     
       <style>
@@ -95,6 +93,19 @@
     text-align: center;
  
 }
+
+/* Slow-motion Zoom Container */
+.img-hover-zoom--slowmo{
+  transform-origin: 50% 65%;
+  transition: transform 2s, filter 3s ease-in-out;
+  filter: brightness(150%);
+}
+
+/* The Transformation */
+.img-hover-zoom--slowmo:hover{
+  filter: brightness(100%);
+  transform: scale(5);
+}
 </style> 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
@@ -106,11 +117,11 @@
             table= $('#parentTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('parents.index",
+                //"sAjaxSource":"{{route('parents.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
-                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
                     "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
@@ -132,7 +143,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('parents.index",
+                    "url" :"{{route('parents.index')}}",
                     "dataSrc" :""
 
                 },
@@ -142,13 +153,14 @@
                 ], "columns":[
                     {"data":"id"},
                     {"data":"dateFormat"},
+                    {"data":"image"},
                     {"data":"genre_id"},
                     {"data": "first_name"},
                     {"data":"last_name"},
                     {"data":"email"},
                     {"data":"phone"},
+                    {"data":"cel"},
                     {"data":"adresse"},
-                    {"data":"image"},
                     {"data":"action"}
 
                 ],
@@ -184,7 +196,7 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               var form_data = new FormData($('#parentForm')[0]);
                     $.ajax({
-                        url: "{{route('parents.store",
+                        url: "{{route('parents.store')}}",
                         type: 'POST',
                         data:form_data,
                         processData : false,
@@ -267,6 +279,7 @@
                          $("#editPhoneId").val(response.phone);
                          $("#editCelId").val(response.cel);
                          $("#editPictureId").html(response.editImage);
+                          $("#editSchoolYearActive").val(response.schoolYear.name);
                         $("#editSchoolYearActiveId").append('<option value='+response.schoolYear.id+'>'+response.schoolYear.name+'</option>');
 
 
@@ -399,7 +412,7 @@
      //GENRE OPTION
             function genreOption(){
             $.ajax({
-                url:"{{route('genres.index",
+                url:"{{route('genres.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -418,7 +431,7 @@
       //LIST EDIT product OPTION
         function editGenreOption(valId, valText){
             $.ajax({
-                url:"{{route('genres.index",
+                url:"{{route('genres.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -444,6 +457,7 @@
                 success:function(response){
                     console.log(response);
                       //$("#schoolYearActiveId").html('');
+                      $("#schoolYearActive").val(response.data[0].name);
                       $("#schoolYearActiveId").append('<option value='+response.data[0].id+'>'+response.data[0].name+'</option>');
                 },
                 error: function(jqXHR, textStatus, errorThrown){
@@ -494,14 +508,15 @@
                                     <tr>
                                         <th><input name="select_all" value="1" type="checkbox"></th>
                                         <th>Date création</th>
+                                        <th>Image</th> 
                                         <th>Sexe</th>
                                         <th>Nom</th>
                                         <th>Prenom</th>
                                          <th>Email</th>
-                                         <th>Téléphone</th>
+                                         <th>Téléphone1</th>
+                                         <th>Téléphone2</th>
                                          <th>Adresse</th>
-                                         <th>Image</th>
-                                         <th>Action</th>
+                                         <th data-priority="1">Action</th>
                                     </tr>
                                     </thead>
 
@@ -509,13 +524,14 @@
                                     <tr>
                                         <th></th>
                                         <th>Date création</th>
+                                        <th>Image</th> 
                                         <th>Sexe</th>
                                         <th>Nom</th>
                                         <th>Prenom</th>
                                          <th>Email</th>
-                                         <th>Téléphone</th>
+                                         <th>Téléphone1</th>
+                                         <th>Téléphone2</th>
                                          <th>Adresse</th>
-                                         <th>Image</th>
                                          <th>Action</th>
                                     </tr>
                                     </tfoot>
@@ -572,9 +588,9 @@
                         </div>
                        <div class="col-sm-6">
                             <label class="control-label col-md-12">Année Scolaire</label>
-                            <div class="col-md-12">
-                                <select class="form-control" id="schoolYearActiveId" name="schoolYear"  readonly="true">
-                                </select>
+                            <div class="col-md-4">
+                              <input name="schoolYearActive" id="schoolYearActive" class="form-control" type="text" disabled="true">
+
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -649,6 +665,8 @@
                             </div>
                         </div>
                     </div>
+                   <select class="form-control" id="schoolYearActiveId" name="schoolYear" hidden="true">
+                 </select>
                 </form>
             </div>
             <div class="modal-footer">
@@ -681,10 +699,20 @@
                     <input type="hidden" name="_method" value="PUT">
                     <div class="messages"></div>
                     
-                        <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
                           <div class="" id="editPictureId">
                           </div>
-                       </div>
+                            </div>
+                                <div class="col-sm-6">
+                             <label class="control-label col-md-12">Année Scolaire</label>
+                            <div class="col-md-4">
+                              <input name="editSchoolYearActive" id="editSchoolYearActive" class="form-control" type="text" disabled="true">
+
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                     </div>
                     
                   <div class="row">
                         <div class="col-sm-6">
@@ -694,14 +722,17 @@
                                 </select>
                             </div>
                         </div>
-                       <div class="col-sm-6">
-                            <label class="control-label col-md-12">Année Scolaire</label>
+                       
+                           <div class="col-sm-6">
+                            <label class="control-label col-md-12">Statut</label>
                             <div class="col-md-12">
-                                 <select class="form-control" id="editSchoolYearActiveId" name="schoolYear" readonly="true">
+                                <select class="form-control select2" id="editStatutId" name="statut">
+                                    <option value="1">Actif</option>
+                                    <option value="2">inactif</option>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
-                        </div>
+                        </div>  
                       
                     </div>
 
@@ -769,18 +800,7 @@
                         </div>
                     </div>
                     
-                    <div class="row">
-                          <div class="col-sm-6">
-                            <label class="control-label col-md-12">Statut</label>
-                            <div class="col-md-12">
-                                <select class="form-control select2" id="editStatutId" name="statut">
-                                    <option value="1">Actif</option>
-                                    <option value="2">inactif</option>
-                                </select>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                    </div></br></br>
+                 </br></br>
 
                     <div class="row">
                         <div class="col-sm-6">
@@ -790,6 +810,8 @@
                             </div>
                         </div>
                     </div>
+                    <select class="form-control" id="editSchoolYearActiveId" name="schoolYear" hidden="true">
+                     </select>
                 </form>
             </div>
             <div class="modal-footer">

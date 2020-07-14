@@ -7,48 +7,49 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- dataTables css -->
-    <link href="plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/responsive.datatables.min.css" rel="stylesheet" type="text/css"/>
-      <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/responsive.datatables.min.css')}}" rel="stylesheet" type="text/css"/>
+      <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
 
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
-    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     
         <!-- Select2 -->
-    <script src="plugins/select2/js/select2.full.min.js"></script>
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
+    <script src="{{asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- dataTables js -->
-    <script src="plugins/data-tables/jquery.datatables.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.bootstrap4.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.responsive.min.js" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.bootstrap4.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}" type="text/javascript"></script>
+    <!--Date pickers-->
+<!--    <script src="assets/plugins/datepicker/js/moment-with-locales.min.js"></script>
+    <script src="../bower_components/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>-->
     <!-- SweetAlert2 -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->
-    <script src="plugins/toastr/toastr.min.js"></script>
-    <script src="plugins/toast.js"></script>
+    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/toast.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+    <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
     
       <style>
@@ -78,22 +79,50 @@
     -webkit-transform: scale(1.1);
     transform: scale(3.1)
 }
+
+#loadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
+
+#editLoadingId {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #F8F8F8;
+    z-index: 99;
+    text-align: center;
+ 
+}
 </style> 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
 
         var table;
         $(document).ready(function(){
-
+             $('#loadingId').hide();
             $('[data-mask]').inputmask()
             table= $('#paymentTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('payments.index",
+                //"sAjaxSource":"{{route('payments.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
-                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
                     "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
@@ -115,7 +144,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('payments.index",
+                    "url" :"{{route('payments.index')}}",
                     "dataSrc" :""
 
                 },
@@ -153,7 +182,7 @@
 
             //IF OPEN MODAL
             $("#btnAddNew").click(function(){
-            $("#pictureId").html('<img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />');
+            //$("#pictureId").html('<img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />');
 
                 $("#paymentForm")[0].reset();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
@@ -162,11 +191,12 @@
                 $(".messages").html("");
                 getSchoolYearActive();
 
-                studentOption();
-                $('#studentId').change(function(){
-                    getImageAndClasseOption($(this).val())
+                //studentOption();
+                classeOption();
+                $('#classeId').change(function(){
+                    studentOption($(this).val())
                 });
-                //classeOption();
+                
                 paymenttypeOption();
 
             });
@@ -177,16 +207,16 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               //var form_data = new FormData($('#paymentForm')[0]);
                     $.ajax({
-                        url: "{{route('payments.store",
+                        url: "{{route('payments.store')}}",
                         type: 'POST',
                         data:$("#paymentForm").serialize(),
                         dataType: "json",
-                        /*beforeSend: function() {
+                        beforeSend: function() {
                          $('#loadingId').show();
-                         },*/
+                         },
                         success: function (response) {
                             console.log(response);
-                            // $('#loadingId').hide();
+                             $('#loadingId').hide();
                             // remove the error
                             $(".form-group").removeClass('has-error').removeClass('has-success');
                             if (response.success === true) {
@@ -250,8 +280,9 @@
                     dataType: 'json',
                     success:function(response) {
                         console.log(response);
-                         //editClasseOption(response.classe.id,response.classe.name);
+                         editClasseOption(response.student.classe.id,response.student.classe.name);
                          editStudentOption(response.student.id,response.student.first_name+' '+response.student.last_name)
+                         //editClasseOption(response.student.id)
                          editPaymentTypeOption(response.data.payment_type.id,response.data.payment_type.name);
                          $("#editSchoolYearActive").val(response.student.schoolYear.name);
                          $("#editDatePaymentId").val(response.data.date_payment);
@@ -279,10 +310,11 @@
                                     data:$("#editpaymentForm").serialize(),
                                   
                                     //dataType :"json",
-                                    /* beforeSend: function() {
+                                     beforeSend: function() {
                                      $('#editLoadingId').show();
-                                     },*/
+                                     },
                                     success:function(response) {
+                                        $('#editLoadingId').hide();
                                          console.log("response1")
                                         console.log(response)
                                          console.log("response2")
@@ -386,7 +418,7 @@
  //LIST Classe OPTION
         function classeOption(){
             $.ajax({
-                url:"{{route('classRooms.index",
+                url:"{{route('classRooms.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -405,18 +437,18 @@
       //LIST EDIT product OPTION
         function editClasseOption(valId, valText){
             $.ajax({
-                url:"{{route('classRooms.index",
+                url:"{{route('classRooms.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
                     $("#editClasseId").html('');
                     $("#editClasseId").append('<option value='+valId+'>'+valText+'</option>');
-                    $.each(response, function(key, val){
+                    /*$.each(response, function(key, val){
                         if(valId!=val.id){
                         $("#editClasseId").append('<option value='+val.id+'>'+val.name+'</option>');
                         }
-                    });
+                    });*/
                 }
             });
         }
@@ -425,7 +457,7 @@
      //PAYMENTTYPE OPTION
             function paymenttypeOption(){
             $.ajax({
-                url:"{{route('paymentTypes.index",
+                url:"{{route('paymentTypes.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -444,7 +476,7 @@
       //LIST EDIT product OPTION
         function editPaymentTypeOption(valId, valText){
             $.ajax({
-                url:"{{route('paymentTypes.index",
+                url:"{{route('paymentTypes.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -462,55 +494,39 @@
     //FIN
     
       //STUDENT OPTION
-            function studentOption(){
+            function studentOption(id){
             $.ajax({
-                url:"{{route('students.index",
+                url:"/getStudentByClasse/"+id,
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
                     $("#studentId").html('');
                     $("#studentId").append('<option value='+0+'>'+' '+'</option>');
-                    $.each(response, function(key, val){
+                    $.each(response.data, function(key, val){
+                        //$("#pictureId").html('<img  src="/images/'+val.photo+'" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />');
                        $("#studentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
                     });
                 }
             });
         }
         
-          function getImageAndClasseOption(studentId){
-            $.ajax({
-                url:"/students/"+studentId,
-                type:'GET',
-                dataType :"json",
-                success:function(response){
-                     console.log("response11");
-                    console.log(response);
-                     console.log("response22");
-                     $("#pictureId").html(response.data.editImage);
-                     $("#classeDisableId").val(response.data.classe.name);
-                    
-                }
-            });
-        }
-    //FIN
-    
-    
+           
       //LIST EDIT product OPTION
         function editStudentOption(valId, valText){
             $.ajax({
-                url:"{{route('students.index",
+                url:"{{route('students.index')}}",
                 type:'GET',
                 dataType :"json",
                 success:function(response){
                     console.log(response);
                     $("#editStudentId").html('');
                     $("#editStudentId").append('<option value='+valId+'>'+valText+'</option>');
-                    $.each(response, function(key, val){
+                    /*$.each(response, function(key, val){
                         if(valId!=val.id){
                         $("#editStudentId").append('<option value='+val.id+'>'+val.first_name+' '+val.last_name+'</option>');
                         }
-                    });
+                    });*/
                 }
             });
         }
@@ -553,7 +569,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Liste Reglment</h1>
+                        <h1>Liste Paiement</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -577,7 +593,7 @@
                                     <tr>
                                         
                                         <th>Date création</th>
-                                        <th>Date Reglement</th>
+                                        <th>Date Paiement</th>
                                         <th>Sexe</th>
                                         <th>Matricule</th>
                                         <th>Nom</th>
@@ -593,7 +609,7 @@
                                     <tr>
                                        
                                         <th>Date création</th>
-                                        <th>Date Reglement</th>
+                                        <th>Date Paiement</th>
                                         <th>Sexe</th>
                                         <th>Matricule</th>
                                         <th>Nom</th>
@@ -633,7 +649,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    NOUVEAU REGLEMENT</h5>
+                    NOUVEAU PAIEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -645,17 +661,21 @@
                      {{csrf_field()}}
                     <div class="messages"></div>
                     
+                  <div id="loadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
+                    
                     <div class="form-group row">
                         <div class="col-sm-6">
                          <div class="form-group">
                           <div class="" id="pictureId">
-                          <img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />
+<!--                          <img  src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt="image" />-->
                           </div>
                        </div>
                        </div> 
                         
                         <div class="col-sm-6">
-                            <label class="control-label col-sm-4">Année Scolaire</label>
+                            <label class="control-label col-sm-6">Année Scolaire</label>
                             <div class="col-md-4">
                                 <input name="schoolYearActive" id="schoolYearActive" class="form-control" type="text" disabled="true">
                            </div>
@@ -665,7 +685,7 @@
                     
                      <div class="form-group row">
                          <div class="col-sm-6">
-                              <label class="control-label col-sm-6">Date Reglement</label>
+                              <label class="control-label col-sm-6">Date Paiement</label>
                               <div class="input-group col-md-12">
                                      <div class="input-group-prepend">
                                          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
@@ -676,7 +696,7 @@
                          </div>
                          
                           <div class="col-sm-6">
-                             <label class="control-label col-sm-6">Type Reglement</label>
+                             <label class="control-label col-sm-6">Type Paiement</label>
                             <div class="col-md-12">
                                 <select class="form-control" id="paymentTypeId" name="paymentType">
                                 </select>
@@ -685,6 +705,17 @@
                      </div> 
                     
                      <div class="form-group row">
+                         
+                         <div class="col-sm-6">
+                             <label class="control-label col-sm-4">Classe</label>
+                                 <div class="col-md-12">
+                                <select class="form-control" id="classeId" name="classe">
+                                </select>
+                                     <span class="help-block"></span>
+                                 
+                               </div>
+                        </div>
+                         
                         <div class="col-sm-6">
                              <label class="control-label col-sm-4">Etudiant</label>
                                  <div class="col-md-12">
@@ -693,13 +724,6 @@
                                  </div>
                         </div>
                          
-                         <div class="col-sm-6">
-                             <label class="control-label col-sm-4">Classe</label>
-                                 <div class="col-md-12">
-                                     <input class="form-control" id="classeDisableId" name="classe" readonly="true">
-                                     <span class="help-block"></span>
-                                 </div>
-                        </div>
                     </div>
                     
                     <div class="form-group row">
@@ -755,7 +779,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabels">
-                    MODIFIER REGLEMENT</h5>
+                    MODIFIER PAIEMENT</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -765,17 +789,23 @@
                 <form id="editpaymentForm" autocomplete="off">
                       {{csrf_field()}}
                     <input type="hidden" name="_method" value="PUT">
-                    <div class="messages"></div>
+                    <div class="edit-messages"></div>
                     
-                        <div class="form-group">
+                  <div id="editLoadingId">
+                    <img id="loading-image" src="/images/ajax-loader.gif" alt="Loading..." />
+                  </div>
+                    
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                         <div class="form-group">
                           <div class="" id="editPictureId">
                           </div>
                        </div>
-                    
-                <div class="form-group row">
-                      <label class="control-label col-sm-2">Année Scolaire</label>
+                       </div> 
+                        
                         <div class="col-sm-6">
-                            <div class="col-md-12">
+                            <label class="control-label col-sm-6">Année Scolaire</label>
+                            <div class="col-md-4">
                                 <input name="schoolYearActive" id="editSchoolYearActive" class="form-control" type="text" disabled="true">
                            </div>
                               <span class="help-block"></span>
@@ -783,8 +813,8 @@
                      </div> 
                     
                      <div class="form-group row">
-                         <label class="control-label col-sm-2">Date Reglement</label>
                          <div class="col-sm-6">
+                              <label class="control-label col-sm-6">Date Paiement</label>
                               <div class="input-group col-md-12">
                                      <div class="input-group-prepend">
                                          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
@@ -793,41 +823,46 @@
                                      <span class="help-block"></span>
                                </div>
                          </div>
-                     </div> 
-                    
-                  <div class="form-group row">
-                    <label class="control-label col-sm-2">Type Reglement</label>
-                        <div class="col-sm-6">
+                         
+                          <div class="col-sm-6">
+                             <label class="control-label col-sm-6">Type Paiement</label>
                             <div class="col-md-12">
                                 <select class="form-control" id="editPaymentTypeId" name="paymentType">
                                 </select>
                             </div>
                         </div>
-                    </div>
+                     </div> 
                     
                      <div class="form-group row">
-                          <label class="control-label col-sm-2">Etudiant</label>
                         <div class="col-sm-6">
+                             <label class="control-label col-sm-4">Etudiant</label>
                                  <div class="col-md-12">
-                                     <select class="form-control select2" id="editStudentId" name="student"></select>
+                                     <select class="form-control select2" id="editStudentId" name="student" readonly="true"></select>
+                                     <span class="help-block"></span>
+                                 </div>
+                        </div>
+                         
+                         <div class="col-sm-6">
+                             <label class="control-label col-sm-4">Classe</label>
+                                 <div class="col-md-12">
+                                     <select class="form-control" id="editClasseId" name="classe" readonly="true"></select>
                                      <span class="help-block"></span>
                                  </div>
                         </div>
                     </div>
                     
                     <div class="form-group row">
-                         <label class="control-label col-sm-2">Montant</label>
+                         
                         <div class="col-sm-6">
+                            <label class="control-label col-sm-2">Montant</label>
                             <div class="input-group col-md-12">
                                 <input name="amount" id="editAmountId" class="form-control" type="text" readonly="true">
                                 <span class="help-block"></span>
                             </div>
                         </div>
-                    </div>
-                    
-                       <div class="form-group row">
-                          <label class="control-label col-sm-2">Moyen de paiement</label>
-                        <div class="col-sm-6">
+                        
+                         <div class="col-sm-6">
+                            <label class="control-label col-sm-6">Moyen de paiement</label>
                                  <div class="col-md-12">
                                      <select class="form-control select2" id="editPayWayId" name="payWay">
                                          <option value="1">Espèce</option>

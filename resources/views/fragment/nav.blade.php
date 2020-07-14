@@ -8,12 +8,43 @@
 
             });
 </script>
+
+<style>
+  .spinner {
+  width: 35px;
+  height: 35px;
+  background-color: #333;
+
+  margin: 2px auto;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes sk-rotateplane {
+  0% { 
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+  } 50% { 
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+  } 100% { 
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+</style>
         <aside class="main-sidebar elevation-4 sidebar-dark-white">
             <!-- Brand Logo -->
             <a class="brand-link navbar-white">
-                <img src="dist/img/SRSH8931.JPG" alt="AdminLTE Logo" class="brand-image-xl elevation-4"
+                <img src="dist/img/favicon.ico" alt="AdminLTE Logo" class="brand-image-xl elevation-4 spinner"
                      style="opacity: .8">
-                <span class="brand-text font-weight">GESTION</span>
+                <span class="brand-text font-weight">GESSCO</span>
             </a>
 
             <!-- Sidebar -->
@@ -62,7 +93,7 @@
 
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon  fas fa-home"></i>
+                        <i class="nav-icon fa fa-university"></i>
                         <p>
                             Institut
                             <i class="fas fa-angle-left right"></i>
@@ -143,7 +174,7 @@
                 </li>
 
 
-                <li class="nav-header">CLASSE
+                <li class="nav-header">CLASSES
                 </li>
                 <li class="nav-item">
                     <a href="{{route('classRoom')}}"  class="nav-link">
@@ -154,13 +185,25 @@
                     </a>
                 </li>
                 
-                <li class="nav-header">MATIERE
+                <li class="nav-header">MATIERES
                 </li>
                 <li class="nav-item">
                     <a href="{{route('course')}}"  class="nav-link">
                         <i class="nav-icon far fa fa-spinner fa-spin fa-3x fa-fw"></i>
                         <p>
                             Liste Matière
+                        </p>
+                    </a>
+                </li>
+                
+                
+               <li class="nav-header">SEANCES
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('sitting')}}" class="nav-link">
+                        <i class="nav-icon fa fa-folder-open"></i>
+                        <p>
+                            Liste Seance
                         </p>
                     </a>
                 </li>
@@ -178,7 +221,7 @@
                 </li>
 
 
-                <li class="nav-header">ETUDIANT
+                <li class="nav-header">ETUDIANTS
                 </li>
                 <li class="nav-item">
                     <a href="{{route('student')}}" class="nav-link">
@@ -189,23 +232,12 @@
                     </a>
                 </li>
                 
-                <li class="nav-header">SCEANCE
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa fa-book"></i>
-                        <p>
-                            Liste Scéance
-                        </p>
-                    </a>
-                </li>
-                
                 
                 <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
-                        <i class="nav-icon  fa fa-credit-card"></i>
+                        <i class="nav-icon  fa fa-cubes"></i>
                         <p>
-                            REGLEMENT
+                            SCOLARITES
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -231,6 +263,15 @@
                     </ul>
                 </li>
 
+                
+              <li class="nav-header">
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <p>
+                        </p>
+                    </a>
+                </li>
 
             </ul>
         </nav>

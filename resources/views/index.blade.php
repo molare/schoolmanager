@@ -6,72 +6,67 @@
     <title>Gestion</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
     <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <!-- JQVMap -->
-    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/jqvmap/jqvmap.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
+    <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
     <!-- Sparkline
-    <script src="plugins/sparklines/sparkline.js"></script>
+    <script src="{{asset('plugins/sparklines/sparkline.js')}}"></script>
     <!-- JQVMap
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>-->
+    <script src="{{asset('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+    <script src="{{asset('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>-->
     <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="{{asset('plugins/jquery-knob/jquery.knob.min.js')}}"></script>
     <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
+    <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
     <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
     <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <script src="{{asset('dist/js/adminlte.js')}}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes)
-    <script src="/dist/js/pages/dashboard.js"></script>-->
+    <script src="/dist/js/pages/dashboard.js')}}"></script>-->
     <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
+    <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
     <script>
         $(document).ready(function(){
-            /*productCounter();
-            productStockMaxCounter();
-            productStockMinCounter();
-            currentSelling();
-            sellingChart();
-            sellingPieChart();*/
-
+       classeCounter(), studentCounter(), courseCounter(), teacherCounter();
+           dashbordPieChart();
+           dashbordChart();
         });
 
        /* function getUsers(id){
@@ -106,60 +101,57 @@
 
 
 
-        function productCounter(){
+        function classeCounter(){
             $.ajax({
-                url:window.origin+'/countProduct',
-                type:'POST',
+                url:"/countClasse",
+                type:'get',
                 dataType :"json",
                 success:function(response) {
                     console.log(response);
-                    $("#counterProductId").html(response.data);
+                    $("#counterClasseId").html(response.data[0].counter);
                 }
-
             });
         }
-
-        function productStockMaxCounter(){
+        
+        
+        function studentCounter(){
             $.ajax({
-                url:window.origin+'/countProductStockMax',
-                type:'POST',
+                url:"/countStudent",
+                type:'get',
                 dataType :"json",
                 success:function(response) {
                     console.log(response);
-                    $("#counterProductMaxId").html(response.data);
+                    $("#counterStudentId").html(response.data[0].counter);
                 }
-
             });
         }
 
-        function productStockMinCounter(){
+
+        function courseCounter(){
             $.ajax({
-                url:window.origin+'/countProductStockMin',
-                type:'POST',
+                url:"/countCourse",
+                type:'get',
                 dataType :"json",
                 success:function(response) {
                     console.log(response);
-                    $("#counterProductMinId").html(response.data);
+                    $("#counterCourseId").html(response.data[0].counter);
                 }
-
             });
         }
-
-        function currentSelling(){
+        
+        
+          function teacherCounter(){
             $.ajax({
-                url:window.origin+'/currentSelling',
-                type:'POST',
+                url:"/countTeacher",
+                type:'get',
                 dataType :"json",
                 success:function(response) {
-                    console.log("111111111");
                     console.log(response);
-                    console.log("222222222");
-                    $("#currentId").html(response.data);
+                    $("#counterTeacherId").html(response.data[0].counter);
                 }
-
             });
         }
-
+       
             /* ChartJS
              * -------
              * Here we will create a few charts using ChartJS
@@ -170,29 +162,29 @@
             //--------------
 
             // Get context with jQuery - using jQuery's .get() method.
-            function sellingChart(){
+            function dashbordChart(){
                 var d = new Date();
                 var dateYear = d.getFullYear();
                 $.ajax({
-                    url:window.origin+'/payRoll/charts',
-                    type:'POST',
+                    url:'/getStudentByYear',
+                    type:'get',
                     dataType :"json",
                     success:function(response) {
                         console.log(response);
-            var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+            //var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
             var areaChartData = {
-                labels  : ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout','Septembre', 'Octobre','Novembre', 'Decembre' ],
+                labels  : ['Etudiants'],
                 datasets: [
                     {
                         label               : dateYear,
-                        backgroundColor     : '#3ac47d ',
-                        borderColor         : '#3ac47d ',
-                        pointRadius          : true,
-                        pointColor          : '#3ac47d ',
+                        backgroundColor     : '#3ac47d',
+                        borderColor         : '#3ac47d',
+                        pointRadius         : true,
+                        pointColor          : '#3ac47d',
                         pointStrokeColor    : '#28a745',
                         pointHighlightFill  : '#fff',
                         pointHighlightStroke: 'rgba(60,141,188,1)',
-                        data                :response.firstData //[28, 48, 40, 19, 86, 27, 90]
+                        data                : [response.data1[0].counter]
                     },
                     {
                         label               : dateYear-1,
@@ -203,7 +195,7 @@
                         pointStrokeColor    : '#c1c7d1',
                         pointHighlightFill  : '#fff',
                         pointHighlightStroke: '#17a2b8',
-                        data                : response.secondData
+                        data                : [response.data2[0].counter]
                     },
                     {
                         label               : dateYear-2,
@@ -214,7 +206,7 @@
                         pointStrokeColor    : '#c1c7d1',
                         pointHighlightFill  : '#fff',
                         pointHighlightStroke: '#d92550',
-                        data                : response.thirtyData
+                        data                : [response.data3[0].counter]
                     },
                 ]
             }
@@ -240,11 +232,11 @@
             }
 
             // This will get the first returned node in the jQuery collection.
-             var areaChart  = new Chart(areaChartCanvas, {
+             /*var areaChart  = new Chart(areaChartCanvas, {
                 type: 'line',
                 data: areaChartData,
                 options: areaChartOptions
-                })
+                })*/
 
 
                 //-------------
@@ -273,7 +265,7 @@
                 //-------------
                 //- LINE CHART -
                 //--------------
-                var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+              /*  var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
                  var lineChartOptions = jQuery.extend(true, {}, areaChartOptions)
                  var lineChartData = jQuery.extend(true, {}, areaChartData)
                  lineChartData.datasets[0].fill = false;
@@ -284,7 +276,7 @@
                  type: 'line',
                  data: lineChartData,
                  options: lineChartOptions
-                 })
+                 })*/
 
             }
 
@@ -299,19 +291,16 @@
             //- DONUT CHART -
             //-------------
             // Get context with jQuery - using jQuery's .get() method.
-        function sellingPieChart(){
+        function dashbordPieChart(){
             var d = new Date();
             var dateYear = d.getFullYear();
-            var firstYearTotal =0;
-            var secondYearTotal =0;
-            var threeYearTotal =0;
             $.ajax({
-                url:window.origin+'/payRoll/charts',
-                type:'POST',
+                url:'/dashbordStudent',
+                type:'get',
                 dataType :"json",
                 success:function(response) {
                     console.log(response);
-                    for(var i in response.firstData){
+                   /* for(var i in response.firstData){
                         firstYearTotal +=response.firstData[i];
                     }
                     for(var i in response.secondData){
@@ -320,17 +309,16 @@
 
                     for(var i in response.thirtyData){
                         threeYearTotal +=response.thirtyData[i];
-                    }
+                    }*/
 
                     var donutData = {
                         labels: [
-                            dateYear,
-                            dateYear-1,
-                            dateYear-2
+                           "Masculin",
+                           "Feminin"
                         ],
                         datasets: [
                             {
-                                data: [firstYearTotal, secondYearTotal, threeYearTotal],
+                                data: [response.data[0].counter, response.datas[0].counter],
                                 backgroundColor: [ '#3c8dbc', '#f39c12','#f56954', '#00c0ef',  ],
                             }
                         ]
@@ -405,14 +393,14 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3 id="counterProductId"></h3>
+                                <h4 id="counterTeacherId">0</h4>
 
-                                <p>Total Crédit</p>
+                                <p>Total Professeur</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fa fa-user-plus"></i>
                             </div>
-                            <a href="#"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('teacher')}}"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -420,14 +408,14 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3 id="counterProductMaxId"><sup style="font-size: 20px"></sup></h3>
+                                <h4 id="counterStudentId">0<sup style="font-size: 20px"></sup></h4>
 
-                                <p>Total Debit</p>
+                                <p>Total Etudiant</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fa fa-users"></i>
                             </div>
-                            <a href="#"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('student')}}"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -435,14 +423,14 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3 id="currentId"></h3>
+                                <h4 id="counterClasseId">0</h4>
 
-                                <p>Total agent</p>
+                                <p>Total Classe</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fa fa-graduation-cap"></i>
                             </div>
-                            <a href="#" class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('classRoom')}}" class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -450,14 +438,14 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3 id="counterProductMinId"></h3>
+                                <h4 id="counterCourseId">0</h4>
 
-                                <p>Total prêt non remboursé</p>
+                                <p>Total Matière</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="far fa fa-spinner fa-spin fa-3x fa-fw"></i>
                             </div>
-                            <a href="#"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('course')}}"  class="small-box-footer">Plus d'information <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -467,9 +455,9 @@
                     <div class="row">
                         <div class="col-md-6">
                             <!-- AREA CHART -->
-                            <div class="card card-navy">
+                            <div class="card card-green">
                                 <div class="card-header">
-                                    <h3 class="card-title">Graphe des prêts mensuels</h3>
+                                    <h3 class="card-title">Graphe des Etudiants</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -487,8 +475,8 @@
                             </div>
                             <!-- /.card -->
 
-                            <!-- LINE CHART -->
-                            <div class="card card-navy">
+                            <!-- LINE CHART 
+                            <div class="card card-green">
                                 <div class="card-header">
                                     <h3 class="card-title">Courbe des prêts annuels</h3>
 
@@ -503,7 +491,6 @@
                                         <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
                             </div>
                             <!-- /.card -->
 
@@ -513,9 +500,9 @@
                         <div class="col-md-6">
 
                             <!-- PIE CHART -->
-                            <div class="card card-navy">
+                            <div class="card card-blue">
                                 <div class="card-header">
-                                    <h3 class="card-title">Graphe des prêts annuels</h3>
+                                    <h3 class="card-title">Graphe des etudiants</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -530,8 +517,8 @@
                             </div>
                             <!-- /.card -->
 
-                            <!-- BAR CHART -->
-                            <div class="card card-navy">
+                            <!-- BAR CHART 
+                            <div class="card card-blue">
                                 <div class="card-header">
                                     <h3 class="card-title">Courbe des prêts mensuels</h3>
 
@@ -546,7 +533,6 @@
                                         <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
                             </div>
                             <!-- /.card -->
 

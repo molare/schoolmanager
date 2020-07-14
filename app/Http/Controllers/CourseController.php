@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Course;
+use DB;
 use \App\Http\Requests\CourseRequest;
 
 class CourseController extends Controller
@@ -124,6 +125,16 @@ class CourseController extends Controller
 
     }
       
+     return $json;
+    }
+    
+       public function countCourse()
+    {
+      $json;
+      $sqlQuery ='SELECT COUNT(*) AS counter FROM courses';
+
+     $res = DB::select($sqlQuery);
+     $json = response()->json(array('data' => $res), 200);
      return $json;
     }
 }

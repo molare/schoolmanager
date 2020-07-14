@@ -46,15 +46,19 @@ class student extends Model
     public function getImageAttribute(){
         
         $filename = $this->attributes['photo'];   
-        $image= '<a href="javascript: void(0);"><img src="/images/'.$filename.'" border="0" width="40" class="hvr-shrinks img-rounded" alt="" width="40" height="40"  title=""></a>' ;      
+        $image= '<a href="javascript: void(0);"><img src="/images/'.$filename.'" border="0" width="40" class="img-hover-zoom img-hover-zoom--slowmo" alt="" width="40" height="40"  title=""></a>' ;      
         return $image;
         
     }
     
       public function getEditImageAttribute(){
-        
-        $filename = $this->attributes['photo'];   
+        $image="";
+        $filename = $this->attributes['photo'];  
+        if($filename !=""){
         $image= '<a href="javascript: void(0);"><img src="/images/'.$filename.'" border="0" width="200" class="hvr-shrink img-rounded" alt=""  title=""></a>' ;      
+        }else{
+        $image= '<a href="javascript: void(0);"><img src="/images/avatar.png" border="0" width="200" class="hvr-shrink img-rounded" alt=""  title=""></a>' ;      
+        }
         return $image;
         
     }

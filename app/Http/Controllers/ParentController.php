@@ -17,7 +17,7 @@ class ParentController extends Controller
      */
     public function index()
     {
-        $sqlQuery ='SELECT t.id,t.first_name, t.last_name,t.phone, t.email, t.photo,t.adresse, t.created_at, t.photo, g.name AS genre, t.active AS active '
+        $sqlQuery ='SELECT t.id,t.first_name, t.last_name,t.phone,t.cel, t.email, t.photo,t.adresse, t.created_at, t.photo, g.name AS genre, t.active AS active '
                 . ' FROM Parentes AS t, genres g, school_years sy'
                 . ' WHERE t.genre_id = g.id '
                 . ' AND t.school_year_id = sy.id'
@@ -37,6 +37,7 @@ class ParentController extends Controller
                 $Parent->adresse = $value->adresse;
                 $Parent->created_at = $value->created_at;
                 $Parent->photo = $value->photo;
+                $Parent->cel = $value->cel;
                 $activeStatus = $value->active;
                if($activeStatus==1){
                $active_status=  '<td><span class="badge badge-success">Actif</span></td>';

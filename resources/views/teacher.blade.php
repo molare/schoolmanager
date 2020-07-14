@@ -7,11 +7,9 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- dataTables css -->
     <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -103,14 +101,28 @@
     text-align: center;
  
 }
+
+/* Slow-motion Zoom Container */
+.img-hover-zoom--slowmo{
+  transform-origin: 50% 65%;
+  transition: transform 2s, filter 3s ease-in-out;
+  filter: brightness(150%);
+}
+
+/* The Transformation */
+.img-hover-zoom--slowmo:hover{
+  filter: brightness(100%);
+  transform: scale(5);
+}
 </style> 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
 
         var table;
+        var sittingTable;
         $(document).ready(function(){
             $('#loadingId').hide(); 
-            $('[data-mask]').inputmask()
+            $('[data-mask]').inputmask();
             table= $('#teacherTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
@@ -118,7 +130,7 @@
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
-                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
                     "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
@@ -270,22 +282,23 @@
                     dataType: 'json',
                     success:function(response) {
                         console.log(response);
-                         editCategoryOption(response.category_id.id,response.category_id.name);
-                         editGenreOption(response.genre_id.id,response.genre_id.name)
-                         $("#editFirstNameId").val(response.first_name);
-                         $("#editLastNameId").val(response.last_name);
+                        
+                         editCategoryOption(response.data.category_id.id,response.data.category_id.name);
+                         editGenreOption(response.data.genre_id.id,response.data.genre_id.name)
+                         $("#editFirstNameId").val(response.data.first_name);
+                         $("#editLastNameId").val(response.data.last_name);
                          //$("#editsexId").val(response.sex);
-                         $("#editEmailId").val(response.email);
-                         $("#editAdresseId").val(response.adresse);
-                         $("#editPhoneId").val(response.phone);
-                         $("#editCelId").val(response.cel);
-                         $("#editPictureId").html(response.editImage);
-                         $("#editSchoolYearActive").val(response.schoolYear.name);
-                         $("#editSchoolYearActiveId").append('<option value='+response.schoolYear.id+'>'+response.schoolYear.name+'</option>');
+                         $("#editEmailId").val(response.data.email);
+                         $("#editAdresseId").val(response.data.adresse);
+                         $("#editPhoneId").val(response.data.phone);
+                         $("#editCelId").val(response.data.cel);
+                         $("#editPictureId").html(response.data.editImage);
+                         $("#editSchoolYearActive").val(response.data.schoolYear.name);
+                         $("#editSchoolYearActiveId").append('<option value='+response.data.schoolYear.id+'>'+response.data.schoolYear.name+'</option>');
 
 
 
-                        $("#editteacherForm").append('<input type="hidden" name="id" id="teacher_edit_id" value="'+response.id+'"/>');
+                        $("#editteacherForm").append('<input type="hidden" name="id" id="teacher_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
                         $("#btnUpdateteacherId").unbind('click').bind('click', function(){
 
@@ -487,6 +500,7 @@
     //FIN
     
     //FUNCTION UPDATE DEVIS
+     
         function infoTeacher(id){
             if(id) {
                 // remove the error
@@ -505,23 +519,27 @@
                     dataType: 'json',
                     success:function(response) {
                         console.log(response);
+                       //sittingTable = $('#sittingTableId').DataTable();
+                       //sittingTable.ajax.reload(null, false); 
+                        sittingDatable(response.data.id);
+                       
                          //editCategoryOption(response.category_id.id,response.category_id.name);
                          //editGenreOption(response.genre_id.id,response.genre_id.name)
-                         $("#editFirstNameIds").html(response.first_name);
-                         $("#editLastNameIds").html(response.last_name);
+                         $("#editFirstNameIds").html(response.data.first_name);
+                         $("#editLastNameIds").html(response.data.last_name);
                          //$("#editsexId").val(response.sex);
-                         $("#editEmailIds").html(response.email);
-                         $("#editAdresseIds").html(response.adresse);
-                         $("#editPhoneIds").html(response.phone);
-                         $("#editCelIds").html(response.cel);
-                         $("#editPictureIds").html(response.infoImage);
-                         $("#editDateIds").html(response.dateFormat);
-                         $("#editCategoryIds").html(response.category_id.name);
-                        
+                         $("#editEmailIds").html(response.data.email);
+                         $("#editAdresseIds").html(response.data.adresse);
+                         $("#editPhoneIds").html(response.data.phone);
+                         $("#editCelIds").html(response.data.cel);
+                         $("#editPictureIds").html(response.data.infoImage);
+                         $("#editDateIds").html(response.data.dateFormat);
+                         $("#editCategoryIds").html(response.data.category_id.name);
 
-                        $("#editteacherForm").append('<input type="hidden" name="id" id="teacher_edit_id" value="'+response.id+'"/>');
-                        
-                    }
+                        $("#editteacherForm").append('<input type="hidden" name="id" id="teacher_edit_id" value="'+response.data.id+'"/>');
+                     
+                }
+                    
                 }); //fetch selected member info
 
             } else {
@@ -545,6 +563,63 @@
                        console.log(jqXHR);
                  }
             });
+        }
+        function sittingDatable(idTeacher){
+               sittingTable = $('#sittingTableId').DataTable({
+                "responsive": true,
+                "autoWidth":false,
+                "scrollX":true,
+                destroy: true,
+                searching: false,
+                "bLengthChange" : false, //thought this line could hide the LengthMenu
+                "bInfo":false,    
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ Enregistrements",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
+                    "sZeroRecords": "Aucun résultat",
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
+                    "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
+                    "oPaginate": {
+                        "sNext": 'Suivant',
+                        "sPrevious": 'Précèdent',
+                    },
+                    "select": {
+                        "rows": {
+                            "_": " %d ligne sélectionnée(s)",
+                            "1": "1 ligne sélectionnée"
+                        }
+                    }
+                },
+              
+                  "ajax":{
+                    "url" :"/teachers/"+idTeacher,
+                    "dataSrc" :"sitting"
+
+                },
+                "aaSorting": [
+                    [0, 'desc'],
+                    [1, 'asc']
+                ], "columns":[
+                    {"data":"start_hour"},
+                    {"data":"end_hour"},
+                    {"data":"day"},
+                    {"data":"classe"},
+                    {"data":"course"}
+                   
+                ],
+                'columnDefs': [{
+                    'className': 'select-checkbox',
+                    'targets': 0,
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                }],
+                'select': {
+                    'style': 'multi'
+                }
+
+            });
+            //FIN DATATABLE
         }
 
     </script>
@@ -665,7 +740,7 @@
                     <div class="row">
                      <div class="col-sm-6">
                             <label class="control-label col-md-12">Année Scolaire</label>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <input name="schoolYearActive" id="schoolYearActive" class="form-control" type="text" disabled="true">
                             <span class="help-block"></span>
                             </div>
@@ -998,8 +1073,7 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Profile</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Matière</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Programme</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Programe Semestriel</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -1036,104 +1110,32 @@
                   
                  
                     <div class="tab-pane" id="timeline">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">	
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+                    <div class="responsive-data-table">
+                                <table id="sittingTableId" class="table dt-responsive nowrap table-hover table-striped" >
+                                    <thead>
+                                    <tr>
+                                        <th data-priority ="1">Heure Début</th>
+                                        <th data-priority ="2">Heure Fin</th>
+                                        <th>Jour</th>
+                                        <th>Classe</th>
+                                        <th>Matière</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                    <tr>
+                                        <th data-priority ="1">Heure Début</th>
+                                        <th data-priority ="2">Heure Fin</th>
+                                        <th>Jour</th>
+                                        <th>Classe</th>
+                                        <th>Matière</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                   </div>
                     
-
-                  <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">	
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- /.tab-pane -->
+               
                 </div>
                 <!-- /.tab-content -->
               </div><!-- /.card-body -->

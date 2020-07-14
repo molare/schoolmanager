@@ -7,41 +7,39 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/png" href="{{asset('logincssjs/images/icons/favicon.ico')}}"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- dataTables css -->
-    <link href="plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="plugins/data-tables/responsive.datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/datatables/dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/datatables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('plugins/data-tables/responsive.datatables.min.css')}}" rel="stylesheet" type="text/css"/>
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
-    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- dataTables js -->
-    <script src="plugins/data-tables/jquery.datatables.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.bootstrap4.min.js" type="text/javascript"></script>
-    <script src="plugins/data-tables/datatables.responsive.min.js" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/jquery.datatables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.bootstrap4.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('plugins/data-tables/datatables.responsive.min.js')}}" type="text/javascript"></script>
     <!-- SweetAlert2 -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->
-    <script src="plugins/toastr/toastr.min.js"></script>
-    <script src="plugins/toast.js"></script>
+    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/toast.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+    <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="{{asset('dist/js/demo.js')}}"></script>
     <!-- page script -->
        <style>
         #loadingId {
@@ -81,11 +79,11 @@
             table= $('#typeTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                //"sAjaxSource":"{{route('classRooms.index",
+                //"sAjaxSource":"{{route('classRooms.index')}}",
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
-                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sSearch":"<span class=add-on><i class=fa fa-search></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
                     "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
@@ -107,7 +105,7 @@
                   "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
 
                   "ajax":{
-                    "url" :"{{route('classRooms.index",
+                    "url" :"{{route('classRooms.index')}}",
                     "dataSrc" :""
 
                 },
@@ -153,7 +151,7 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
               
                     $.ajax({
-                        url: "{{route('classRooms.store",
+                        url: "{{route('classRooms.store')}}",
                         type: 'POST',
                         data: $("#ClasseForm").serialize(),
                         dataType: "json",

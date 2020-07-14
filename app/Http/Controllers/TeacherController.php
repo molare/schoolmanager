@@ -9,6 +9,7 @@ use \App\Models\Category;
 use Illuminate\Support\Facades\File;
 use \App\Models\Genre;
 use \App\Models\SchoolYear;
+use App\Models\Sitting;
 class TeacherController extends Controller
 {
     /**
@@ -19,9 +20,11 @@ class TeacherController extends Controller
     public function index()
     {
         $sqlQuery ='SELECT t.id,t.first_name, t.last_name,t.phone, t.email, t.photo,t.adresse, t.created_at, t.photo, cat.name AS category, g.name AS genre, t.active AS active '
-                . ' FROM teachers AS t, categories cat, genres g'
+                . ' FROM teachers AS t, categories cat, genres g, school_years s '
                 . ' WHERE t.category_id = cat.id '
-                . ' AND t.genre_id = g.id';
+                . ' AND t.genre_id = g.id'
+                .'  AND t.school_year_id = s.id '
+                .' AND s.status = 1';
 
      $res = DB::select($sqlQuery);
       
@@ -92,7 +95,7 @@ class TeacherController extends Controller
                 $image->move($destinationPath, $name);
                 $teacher->photo = $name;
               } else{
-                 $teacher->photo = null;  
+                 $teacher->photo = "";  
               }
               
               $teacher->save();
@@ -115,11 +118,62 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
+        $json;
+        
         $teacher = Teacher::find($id);
         $teacher->category_id = Category::find($teacher->category_id);
         $teacher->genre_id = Genre::find($teacher->genre_id);
         $teacher->schoolYear = SchoolYear::find($teacher->school_year_id);
-        return $teacher; 
+        
+           $sqlQuery ='SELECT t.id, t.start_hour, t.end_hour, t.day, '
+                . ' t.created_at, c.name AS classe, co.name AS course, tea.first_name, tea.last_name '
+                . ' FROM sittings AS t, class_rooms c, courses co, teachers tea, school_years ys '
+                . ' WHERE t.classe_id = c.id '
+                . ' AND t.course_id = co.id '
+                .'  AND t.teacher_id = tea.id '
+                .'  AND t.school_year_id = ys.id '
+                . ' AND tea.id ='.$teacher->id.' ORDER BY t.day DESC';
+
+     $res = DB::select($sqlQuery);
+      
+       $rows =array();
+           foreach ($res as $value){
+            
+                $sitting = new Sitting;
+                $sitting->id=$value->id;
+                $sitting->created_at = $value->created_at;
+                $sitting->teacher = $value->first_name.' '.$value->last_name;
+                $sitting->course = $value->course;
+                $sitting->classe = $value->classe;
+                $sitting->start_hour = $value->start_hour;
+                $sitting->end_hour = $value->end_hour;
+                if($value->day==1){
+                $sitting->day = "Lundi";
+                }elseif($value->day==2){
+                  $sitting->day = "Mardi";  
+                }else if($value->day==3){
+                  $sitting->day = "Mercredi";  
+                }else if($value->day==4){
+                  $sitting->day = "Jeudi";  
+                }else if($value->day==5){
+                  $sitting->day = "Vendredi";  
+                }else if($value->day==6){
+                  $sitting->day = "Samedi";  
+                }else if($value->day==7){
+                  $sitting->day = "Dimanche";  
+                }
+                
+                array_push($rows,$sitting);
+            }
+        
+        
+           if($rows !==[]){
+              
+            $json = response()->json(array('data' => $teacher, 'sitting' => $rows), 200);
+            }else{
+              $json = response()->json(array('data' => $teacher), 200);  
+            }
+        return $json;
     }
 
     /**
@@ -208,5 +262,18 @@ class TeacherController extends Controller
         }
 
          return $json;
+    }
+    
+    public function countTeacher()
+    {
+      $json;
+      $sqlQuery ='SELECT COALESCE(COUNT(*),0) AS counter '
+    . ' FROM teachers AS t, school_years s '
+    . ' WHERE t.school_year_id = s.id '
+    . ' AND s.status = 1';
+
+     $res = DB::select($sqlQuery);
+     $json = response()->json(array('data' => $res), 200);
+     return $json;
     }
 }

@@ -7,9 +7,9 @@
             </ul>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-             <a class="nav-link" data-toggle="dropdown" href="#">
+             <a class="nav-link" href="{{route('schoolyear')}}">
               <i class=""></i>
-              <span class="badge badge-success navbar-badge"><h5 id="yearActiveId"></h5></span>
+              <span class="badge badge-success navbar-badge"><h5 id="yearActiveId">0000-0000</h5></span>
             </a>
              </li>
           </ul>
