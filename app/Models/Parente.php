@@ -16,7 +16,7 @@ class Parente extends Model
     }
     
     function schoolYear(){
-       return $this->belongsTo(SchoolYear::class);
+       return $this->belongsTo(\App\Models\SchoolYear::class);
     }
     
     public function getActionAttribute(){
