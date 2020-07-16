@@ -246,6 +246,7 @@
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
+                         $('#loadingId').hide();
                         console.log(jqXHR);
                        if(jqXHR.responseJSON.errors.first_name !==undefined){
                              $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.first_name+'</p>');
@@ -418,6 +419,7 @@
                                         }
                                     },
                                     error: function(jqXHR, textStatus, errorThrown){
+                                     $('#editLoadingId').hide();
                                     console.log(jqXHR);
                                       /*if(jqXHR.responseJSON.errors.name !==undefined){
                                         $("#editNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.name+'</p>');

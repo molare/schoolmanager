@@ -229,6 +229,7 @@
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
+                         $('#loadingId').hide();
                         console.log(jqXHR);
                          $('#loadingId').hide();
                             if(jqXHR.responseJSON.errors.name !==undefined){
@@ -336,6 +337,7 @@
                                         }
                                     },
                                     error: function(jqXHR, textStatus, errorThrown){
+                                     $('#editLoadingId').hide();
                                         /*  if(jqXHR.status ==403){
                                          window.location = window.origin + "/spring-boot-apps/errorAuthorise";
                                          }else {

@@ -67,6 +67,9 @@
        classeCounter(), studentCounter(), courseCounter(), teacherCounter();
            dashbordPieChart();
            dashbordChart();
+           /*var d = new Date();
+           var dateYear = d.getFullYear()
+           $("#yearId").html((dateYear-1)+'-'+dateYear);*/
         });
 
        /* function getUsers(id){
@@ -176,7 +179,7 @@
                 labels  : ['Etudiants'],
                 datasets: [
                     {
-                        label               : dateYear,
+                        label               : dateYear-1+'-'+dateYear,
                         backgroundColor     : '#3ac47d',
                         borderColor         : '#3ac47d',
                         pointRadius         : true,
@@ -187,7 +190,7 @@
                         data                : [response.data1[0].counter]
                     },
                     {
-                        label               : dateYear-1,
+                        label               : (dateYear-2)+'-'+(dateYear-1),
                         backgroundColor     : '#17a2b8',
                         borderColor         : '#17a2b8',
                         pointRadius         : true,
@@ -198,7 +201,7 @@
                         data                : [response.data2[0].counter]
                     },
                     {
-                        label               : dateYear-2,
+                        label               : (dateYear-3)+'-'+(dateYear-2),
                         backgroundColor     : '#d92550',
                         borderColor         : '#d92550',
                         pointRadius         : true,
@@ -457,7 +460,7 @@
                             <!-- AREA CHART -->
                             <div class="card card-green">
                                 <div class="card-header">
-                                    <h3 class="card-title">Graphe des Etudiants</h3>
+                                    <h3 class="card-title">Graphe des etudiants par année scolaire</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -502,7 +505,7 @@
                             <!-- PIE CHART -->
                             <div class="card card-blue">
                                 <div class="card-header">
-                                    <h3 class="card-title">Graphe des etudiants</h3>
+                                    <h3 class="card-title">Graphe des etudiants par sexe</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
