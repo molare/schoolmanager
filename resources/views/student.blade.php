@@ -268,12 +268,31 @@
                          $('#loadingId').hide();
                         console.log(jqXHR);
                          $('#loadingId').hide();
-                       if(jqXHR.responseJSON.errors.first_name !==undefined){
-                             $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.first_name+'</p>');
+                                if(jqXHR.responseJSON.errors.firstName !==undefined){
+                             $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.firstName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.lastName !==undefined){
+                             $("#lastNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.lastName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.cel !==undefined){
+                             $("#celId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.cel+'</p>');
                              }
                              
-                             if(jqXHR.responseJSON.errors.last_name !==undefined){
-                             $("#lastNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.last_name+'</p>');
+                             if(jqXHR.responseJSON.errors.phone !==undefined){
+                             $("#phoneId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.phone+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.email !==undefined){
+                             $("#birthDateErrorId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.email+'</p>');
+                             }
+                             
+                             if(jqXHR.responseJSON.errors.genre !==undefined){
+                             $("#genreId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.genre+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.birthDate !==undefined){
+                             $("#birthDateId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.birthDate+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.registerNumber !==undefined){
+                             $("#registerNumberId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.registerNumber+'</p>');
                              }
 
                         }
@@ -377,15 +396,34 @@
                                     error: function(jqXHR, textStatus, errorThrown){
                                      $('#editLoadingId').hide();
                                     console.log(jqXHR);
-                                      /*if(jqXHR.responseJSON.errors.name !==undefined){
-                                        $("#editNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.name+'</p>');
-                                        }
+                             if(jqXHR.responseJSON.errors.firstName !==undefined){
+                             $("#editFirstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.firstName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.lastName !==undefined){
+                             $("#editLastNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.lastName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.cel !==undefined){
+                             $("#editCelId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.cel+'</p>');
+                             }
                              
-                                        if(jqXHR.responseJSON.errors.description !==undefined){
-                                        $("#editDescriptionId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.description+'</p>');
-                                        }*/                                
-                                      }
-                                }); // /ajax
+                             if(jqXHR.responseJSON.errors.phone !==undefined){
+                             $("#editPhoneId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.phone+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.email !==undefined){
+                             $("#editBirthDateErrorId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.email+'</p>');
+                             }
+                             
+                             if(jqXHR.responseJSON.errors.genre !==undefined){
+                             $("#editGenreId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.genre+'</p>');
+                             }
+                               if(jqXHR.responseJSON.errors.birthDate !==undefined){
+                             $("#editBirthDateId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.birthDate+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.registerNumber !==undefined){
+                             $("#editRegisterNumberId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.registerNumber+'</p>');
+                             }
+                              }
+                            }); // /ajax
                          
                         });
 
@@ -902,6 +940,7 @@
                                      <input name="birthDate" id="birthDateId" class="form-control" type="text" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                      <span class="help-block"></span>
                                  </div>
+                                 
                              </div>
 
                              <div class="col-sm-6">
@@ -949,6 +988,7 @@
                                 </div>
                                 <input class="form-control" id="emailId" name="email" type="text" placeholder="Email">
                             </div>
+                             <span id="birthDateErrorId" class="help-block"></span>
                         </div>
                           
                         <div class="col-sm-6">
@@ -1125,6 +1165,7 @@
                                 </div>
                                 <input class="form-control" id="editEmailId" name="email" type="text" placeholder="Email">
                             </div>
+                             <span id="editBirthDateErrorId" class="help-block"></span>
                         </div>
                           
                         <div class="col-sm-6">

@@ -9,6 +9,7 @@ use App\models\Parente;
 use Illuminate\Support\Facades\File;
 use \App\Models\Genre;
 use \App\Models\SchoolYear;
+use \App\Http\Requests\StudentRequest ;
 
 class StudentController extends Controller
 {
@@ -84,7 +85,7 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
           $json;
             try {
@@ -202,7 +203,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
           $json;
             try {

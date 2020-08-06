@@ -234,13 +234,27 @@
                         error: function (jqXHR, textStatus, errorThrown) {
                          $('#loadingId').hide();
                         console.log(jqXHR);
-                        /*if(jqXHR.responseJSON.errors.name !==undefined){
-                             $("#nameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.name+'</p>');
+                          if(jqXHR.responseJSON.errors.firstName !==undefined){
+                             $("#firstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.firstName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.lastName !==undefined){
+                             $("#lastNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.lastName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.cel !==undefined){
+                             $("#celId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.cel+'</p>');
                              }
                              
-                             if(jqXHR.responseJSON.errors.description !==undefined){
-                             $("#descriptionId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.description+'</p>');
-                             }*/
+                             if(jqXHR.responseJSON.errors.phone !==undefined){
+                             $("#phoneId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.phone+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.email !==undefined){
+                             $("#emailId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.email+'</p>');
+                             }
+                             
+                             if(jqXHR.responseJSON.errors.genre !==undefined){
+                             $("#genreId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.genre+'</p>');
+                             }
+                           
 
                         }
                     });
@@ -336,15 +350,28 @@
                                     error: function(jqXHR, textStatus, errorThrown){
                                      $('#editLoadingId').hide();
                                     console.log(jqXHR);
-                                      if(jqXHR.responseJSON.errors.name !==undefined){
-                                        $("#editNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.name+'</p>');
-                                        }
+                              if(jqXHR.responseJSON.errors.firstName !==undefined){
+                             $("#editFirstNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.firstName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.lastName !==undefined){
+                             $("#editLastNameId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.lastName+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.cel !==undefined){
+                             $("#editCelId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.cel+'</p>');
+                             }
                              
-                                        if(jqXHR.responseJSON.errors.description !==undefined){
-                                        $("#editDescriptionId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.description+'</p>');
-                                        }                                
-                                        }
-                                }); // /ajax
+                             if(jqXHR.responseJSON.errors.phone !==undefined){
+                             $("#editPhoneId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.phone+'</p>');
+                             }
+                             if(jqXHR.responseJSON.errors.email !==undefined){
+                             $("#editEmailId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.email+'</p>');
+                             }
+                             
+                             if(jqXHR.responseJSON.errors.genre !==undefined){
+                             $("#editGenreId").after('<p class="text-danger">'+jqXHR.responseJSON.errors.genre+'</p>');
+                             }
+                              }
+                            }); // /ajax
                          
                         });
 

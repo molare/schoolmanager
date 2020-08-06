@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use \App\Models\Genre;
 use \App\Models\SchoolYear;
 use App\Models\Sitting;
+use \App\Http\Requests\TeacherRequest;
 class TeacherController extends Controller
 {
     /**
@@ -70,7 +71,7 @@ class TeacherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TeacherRequest $request)
     {
         $json;
             try {
@@ -194,7 +195,7 @@ class TeacherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TeacherRequest $request, $id)
     {
           $json;
             try {
